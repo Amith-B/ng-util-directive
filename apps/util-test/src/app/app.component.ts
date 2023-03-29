@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'util-test';
+
+  loading = true;
+
+  handleToggle(): void {
+    this.loading = !this.loading;
+  }
 }

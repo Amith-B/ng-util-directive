@@ -1,1 +1,3 @@
-<button [ngSkeleton]="true">Test</button>
+<button *ngSkeleton="loading">Test</button>
+<br />
+<button (click)="handleToggle()">Toggle Loading</button>
