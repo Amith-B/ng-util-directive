@@ -5,6 +5,7 @@ import {
   Input,
   OnChanges,
   TemplateRef,
+  Type,
   ViewContainerRef,
 } from '@angular/core';
 
@@ -24,7 +25,7 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges {
   /**
    * This can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered
    */
-  @Input() ngSkeletonComponent: unknown = NgSkeletonShinyLoaderComponent;
+  @Input() ngSkeletonComponent: Type<unknown> = NgSkeletonShinyLoaderComponent;
 
   constructor(
     private tpl: TemplateRef<unknown>,

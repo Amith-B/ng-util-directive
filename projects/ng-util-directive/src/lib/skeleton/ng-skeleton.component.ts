@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Type } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { NgSkeletonShinyLoaderComponent } from './loaders/shiny-loader.component';
@@ -15,7 +15,7 @@ import { NgSkeletonShinyLoaderComponent } from './loaders/shiny-loader.component
       <ng-content></ng-content>
     </div>
     <div class="ng-skeleton-loader" *ngIf="loading">
-      <ng-container *ngComponentOutlet="$any(loaderComponent)"></ng-container>
+      <ng-container *ngComponentOutlet="loaderComponent"></ng-container>
     </div>
   `,
   styles: [
@@ -49,5 +49,5 @@ export class NgSkeletonComponent {
   /**
    * This can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered
    */
-  @Input() loaderComponent: unknown = NgSkeletonShinyLoaderComponent;
+  @Input() loaderComponent: Type<unknown> = NgSkeletonShinyLoaderComponent;
 }
