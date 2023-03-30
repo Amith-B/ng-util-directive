@@ -27,6 +27,11 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges {
    */
   @Input() ngSkeletonComponent: Type<unknown> = NgSkeletonShinyLoaderComponent;
 
+  /**
+   * This can be used to pass any object data to the skeleton component
+   */
+  @Input() ngSkeletonData: unknown;
+
   constructor(
     private tpl: TemplateRef<unknown>,
     private vcr: ViewContainerRef
@@ -50,6 +55,7 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges {
     if (this.componentRef) {
       this.componentRef.setInput('loading', this.ngSkeleton);
       this.componentRef.setInput('loaderComponent', this.ngSkeletonComponent);
+      this.componentRef.setInput('data', this.ngSkeletonData);
     }
   }
 }

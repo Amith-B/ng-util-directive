@@ -1,3 +1,6 @@
-<button *ngSkeleton="loading">Test</button>
+<button *ngSkeleton="loading; data: skeletonData">Test</button>
+<br />
 <br />
 <button (click)="handleToggle()">Toggle Loading</button>
+<br />
+<button (click)="updateSkeletonData()">Update Skeleton Data</button>

@@ -10,7 +10,13 @@ export class AppComponent {
 
   loading = true;
 
+  skeletonData = 1;
+
   handleToggle(): void {
     this.loading = !this.loading;
+  }
+
+  updateSkeletonData(): void {
+    this.skeletonData = ++this.skeletonData;
   }
 }

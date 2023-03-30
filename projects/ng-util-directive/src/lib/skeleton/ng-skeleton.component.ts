@@ -1,12 +1,14 @@
-import { Component, Input, Type } from '@angular/core';
+import { Component, Input, SimpleChanges, Type } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { NgSkeletonShinyLoaderComponent } from './loaders/shiny-loader.component';
+import { SkeletonService } from './ng-skeleton.service';
 
 @Component({
   selector: 'ng-skeleton',
   standalone: true,
   imports: [CommonModule],
+  providers: [SkeletonService],
   template: `
     <div
       class="ng-skeleton-content"
@@ -50,4 +52,17 @@ export class NgSkeletonComponent {
    * This can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered
    */
   @Input() loaderComponent: Type<unknown> = NgSkeletonShinyLoaderComponent;
+
+  /**
+   * This prop will get the data from `ngSkeletonData` attribute
+   */
+  @Input() data?: unknown;
+
+  constructor(private skeletonService: SkeletonService) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data']) {
+      this.skeletonService.dataObservable$.next(this.data);
+    }
+  }
 }
