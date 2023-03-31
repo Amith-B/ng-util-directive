@@ -4,6 +4,7 @@ import {
   Directive,
   Input,
   OnChanges,
+  SimpleChanges,
   TemplateRef,
   Type,
   ViewContainerRef,
@@ -32,23 +33,41 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges {
    */
   @Input() ngSkeletonData: unknown;
 
+  /**
+   * If `true` the dom element get hidden with visibility: hidden
+   */
+  @Input() ngSkeletonHideOnLoading = true;
+
   constructor(
     private tpl: TemplateRef<unknown>,
     private vcr: ViewContainerRef
   ) {}
 
+  ngContentNodes?: any[];
   componentRef!: ComponentRef<NgSkeletonComponent>;
   ngAfterViewInit(): void {
-    const ngContentNodes = this.tpl.createEmbeddedView({}).rootNodes;
+    this.ngContentNodes = this.tpl.createEmbeddedView({}).rootNodes;
     this.componentRef = this.vcr.createComponent(NgSkeletonComponent, {
-      projectableNodes: [ngContentNodes],
+      projectableNodes: [this.ngContentNodes],
     });
 
     this.updateInputs();
+    this.handleNodeVisibility();
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.updateInputs();
+    if (changes['ngSkeleton']) {
+      this.handleNodeVisibility();
+    }
+  }
+
+  handleNodeVisibility(): void {
+    if (this.ngSkeletonHideOnLoading && this.ngContentNodes) {
+      this.ngContentNodes.forEach((node: HTMLElement) => {
+        node.style.visibility = this.ngSkeleton ? 'hidden' : 'visible';
+      });
+    }
   }
 
   updateInputs(): void {

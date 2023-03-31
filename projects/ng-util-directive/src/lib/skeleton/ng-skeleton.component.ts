@@ -10,12 +10,7 @@ import { SkeletonService } from './ng-skeleton.service';
   imports: [CommonModule],
   providers: [SkeletonService],
   template: `
-    <div
-      class="ng-skeleton-content"
-      [style.visibility]="loading ? 'hidden' : 'visible'"
-    >
-      <ng-content></ng-content>
-    </div>
+    <ng-content></ng-content>
     <div class="ng-skeleton-loader" *ngIf="loading">
       <ng-container *ngComponentOutlet="loaderComponent"></ng-container>
     </div>
