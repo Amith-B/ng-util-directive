@@ -1,14 +1,7 @@
-import {
-  Description,
-  Meta,
-  Props,
-  Canvas,
-  Story,
-} from "@storybook/addon-docs/blocks";
-import { NgSkeletonModule } from "./ng-skeleton.module";
+import { Meta, Story } from "@storybook/addon-docs/blocks";
 
 <Meta
-  title="Directives/NgSkeleton/Usage guide"
+  title="Directives/NgSkeleton/Guide: Usage guide"
   parameters={{
     viewMode: "docs",
     previewTabs: {
@@ -18,6 +11,8 @@ import { NgSkeletonModule } from "./ng-skeleton.module";
 />
 
 # Skeleton Usage
+
+`import { NgSkeletonModule } from 'ng-util-directive';`
 
 <br />
 
@@ -30,21 +25,21 @@ import { NgSkeletonModule } from "./ng-skeleton.module";
 ```html
 <h1
   style="min-width: 120px; min-height: 40px"
-  *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading"
+  *ngSkeleton="ngSkeleton; data: { shape: 'fullSize' }; hideOnLoading: true"
 >
   Heading
 </h1>
 
 <p
   style="min-width: 250px; min-height: 20px"
-  *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading"
+  *ngSkeleton="true; data: { shape: 'fullSize' }; hideOnLoading: true"
 >
   First paragraph with some content
 </p>
 
 <p
   style="min-width: 250px; min-height: 20px"
-  *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading"
+  *ngSkeleton="true; data: { shape: 'fullSize' }; hideOnLoading: true"
 >
   Second paragraph with some content
 </p>
