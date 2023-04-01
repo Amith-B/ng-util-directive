@@ -96,6 +96,24 @@ import { Meta, Story } from "@storybook/addon-docs/blocks";
 />
 ```
 
+## Custom color
+
+`loaderColor1` and `loaderColor2` in data prop can be used to change color of loader
+
+<Story id="directives-ngskeleton--custom-color" />
+
+```html
+<img
+  (load)="loading = false"
+  *ngSkeleton="
+    loading;
+    data: {shape: 'square', size: '100px', loaderColor1: '#343434', loaderColor2: '#404040' };
+    hideOnLoading: true"
+  style="width: 200px; height: 200px; border-radius: 20px;"
+  src="art.jpg"
+/>
+```
+
 # Directive Props
 
 ```typescript tsx

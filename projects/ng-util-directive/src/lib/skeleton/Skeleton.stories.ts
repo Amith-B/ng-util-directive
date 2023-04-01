@@ -113,6 +113,26 @@ Square.args = {
   hideOnLoading: true,
 };
 
+export const CustomColor: Story<DirectiveType> = (args: DirectiveType) => ({
+  props: args,
+  template: `
+    <img  *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 200px; height: 200px; border-radius: 20px;" src="art.jpg"/>
+    <!-- Usage: <img (load)="ngSkeleton = false" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 100%; height: 100%; border-radius: 50%;" src="art.jpg"/>-->
+  `,
+});
+
+CustomColor.args = {
+  ngSkeleton: true,
+  data: {
+    shape: 'square',
+    size: '200px',
+    borderRadius: '20px',
+    loaderColor1: '#343434',
+    loaderColor2: '#404040',
+  },
+  hideOnLoading: true,
+};
+
 export const Rectangle: Story<DirectiveType> = (args: DirectiveType) => ({
   props: args,
   template: `
