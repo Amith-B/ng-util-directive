@@ -1,0 +1,974 @@
+{
+    "pipes": [],
+    "interfaces": [],
+    "injectables": [
+        {
+            "name": "SkeletonService",
+            "id": "injectable-SkeletonService-e11964ae07ef3b659ccb976b332e8fd6ea8ba811a26f34db9a8b8a7c43db551074cca873110e30d335833236de4283481727dffc3b2de5630a8084849c72bc27",
+            "file": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.service.ts",
+            "properties": [
+                {
+                    "name": "dataObservable$",
+                    "defaultValue": "new BehaviorSubject<unknown>({\r\n    shape: 'fullSize',\r\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                }
+            ],
+            "methods": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { BehaviorSubject } from 'rxjs';\r\nimport { Injectable } from '@angular/core';\r\n\r\n@Injectable()\r\nexport class SkeletonService {\r\n  dataObservable$ = new BehaviorSubject<unknown>({\r\n    shape: 'fullSize',\r\n  });\r\n}\r\n",
+            "type": "injectable"
+        }
+    ],
+    "guards": [],
+    "interceptors": [],
+    "classes": [],
+    "directives": [
+        {
+            "name": "NgSkeletonDirective",
+            "id": "directive-NgSkeletonDirective-48f35fba0bad6f1196c5f551442d5aa57ec856872c7756fb28c5b20e5f7499ac1f6126ccb1c0977373e59a1addb3691ac767da33ad33e2d5edfb027cb7939503",
+            "file": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.directive.ts",
+            "type": "directive",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ComponentRef,\r\n  Directive,\r\n  Input,\r\n  OnChanges,\r\n  SimpleChanges,\r\n  TemplateRef,\r\n  Type,\r\n  ViewContainerRef,\r\n} from '@angular/core';\r\n\r\nimport { NgSkeletonComponent } from './ng-skeleton.component';\r\nimport {\r\n  NgSkeletonShinyLoaderComponent,\r\n  ShinyLoaderData,\r\n} from './loaders/shiny-loader.component';\r\n\r\n@Directive({\r\n  selector: '[ngSkeleton]',\r\n})\r\nexport class NgSkeletonDirective implements AfterViewInit, OnChanges {\r\n  /**\r\n   * If `true` this shows skeleton loader in place of dom element.\r\n   * It will take the height and width of the dom element\r\n   */\r\n  @Input() ngSkeleton = false;\r\n\r\n  /**\r\n   * This can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered\r\n   */\r\n  @Input() ngSkeletonComponent: Type<unknown> = NgSkeletonShinyLoaderComponent;\r\n\r\n  /**\r\n   * This can be used to pass any object data to the skeleton component\r\n   * `ShinyLoaderData` - default type\r\n   */\r\n  @Input() ngSkeletonData: ShinyLoaderData | unknown;\r\n\r\n  /**\r\n   * If `true` the dom element will be hidden with visibility: hidden\r\n   */\r\n  @Input() ngSkeletonHideOnLoading = true;\r\n\r\n  constructor(\r\n    private tpl: TemplateRef<unknown>,\r\n    private vcr: ViewContainerRef\r\n  ) {}\r\n\r\n  ngContentNodes?: any[];\r\n  componentRef!: ComponentRef<NgSkeletonComponent>;\r\n  ngAfterViewInit(): void {\r\n    this.ngContentNodes = this.tpl.createEmbeddedView({}).rootNodes;\r\n    this.componentRef = this.vcr.createComponent(NgSkeletonComponent, {\r\n      projectableNodes: [this.ngContentNodes],\r\n    });\r\n\r\n    this.updateInputs();\r\n    this.handleNodeVisibility();\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges): void {\r\n    this.updateInputs();\r\n    if (changes['ngSkeleton']) {\r\n      this.handleNodeVisibility();\r\n    }\r\n  }\r\n\r\n  handleNodeVisibility(): void {\r\n    if (this.ngSkeletonHideOnLoading && this.ngContentNodes) {\r\n      this.ngContentNodes.forEach((node: HTMLElement) => {\r\n        node.style.visibility = this.ngSkeleton ? 'hidden' : 'visible';\r\n      });\r\n    }\r\n  }\r\n\r\n  updateInputs(): void {\r\n    if (this.componentRef) {\r\n      this.componentRef.setInput('loading', this.ngSkeleton);\r\n      this.componentRef.setInput('loaderComponent', this.ngSkeletonComponent);\r\n      this.componentRef.setInput('data', this.ngSkeletonData);\r\n    }\r\n  }\r\n}\r\n",
+            "selector": "[ngSkeleton]",
+            "providers": [],
+            "inputsClass": [
+                {
+                    "name": "ngSkeleton",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nIf `true` this shows skeleton loader in place of dom element.\nIt will take the height and width of the dom element\n",
+                    "description": "<p>If <code>true</code> this shows skeleton loader in place of dom element.\nIt will take the height and width of the dom element</p>\n",
+                    "line": 27,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "ngSkeletonComponent",
+                    "defaultValue": "NgSkeletonShinyLoaderComponent",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nThis can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered\n",
+                    "description": "<p>This can be used to show a custom component as a loader, by default the inbuilt <code>NgSkeletonDefaultLoaderComponent</code> component is rendered</p>\n",
+                    "line": 32,
+                    "type": "Type<>",
+                    "decorators": []
+                },
+                {
+                    "name": "ngSkeletonData",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nThis can be used to pass any object data to the skeleton component\n`ShinyLoaderData` - default type\n",
+                    "description": "<p>This can be used to pass any object data to the skeleton component\n<code>ShinyLoaderData</code> - default type</p>\n",
+                    "line": 38,
+                    "type": "ShinyLoaderData | ",
+                    "decorators": []
+                },
+                {
+                    "name": "ngSkeletonHideOnLoading",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nIf `true` the dom element will be hidden with visibility: hidden\n",
+                    "description": "<p>If <code>true</code> the dom element will be hidden with visibility: hidden</p>\n",
+                    "line": 43,
+                    "type": "boolean",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "propertiesClass": [
+                {
+                    "name": "componentRef",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ComponentRef<NgSkeletonComponent>",
+                    "optional": false,
+                    "description": "",
+                    "line": 51
+                },
+                {
+                    "name": "ngContentNodes",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any[]",
+                    "optional": true,
+                    "description": "",
+                    "line": 50
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "handleNodeVisibility",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 69,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 52,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnChanges",
+                    "args": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 62,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updateInputs",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 77,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "implements": [
+                "AfterViewInit",
+                "OnChanges"
+            ],
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "tpl",
+                        "type": "TemplateRef<>",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "vcr",
+                        "type": "ViewContainerRef",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 43,
+                "jsdoctags": [
+                    {
+                        "name": "tpl",
+                        "type": "TemplateRef<>",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "vcr",
+                        "type": "ViewContainerRef",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "NgSkeletonLoader",
+            "id": "directive-NgSkeletonLoader-469ae582d4e51d466164595cc87483d82ea4ea236d3310cfe8cf5b1a86d23c965f43ff468fb52e7692195e1fecab3fce9d7bbbc75ea90efbc04a0adf6b7b57f5",
+            "file": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.interface.ts",
+            "type": "directive",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Directive, OnDestroy, OnInit } from '@angular/core';\r\n\r\nimport { SkeletonService } from './ng-skeleton.service';\r\nimport { Subscription } from 'rxjs';\r\n\r\n@Directive()\r\nexport abstract class NgSkeletonLoader implements OnDestroy, OnInit {\r\n  abstract handleDataChange(data: unknown): void;\r\n\r\n  constructor(private skeletonService: SkeletonService) {}\r\n\r\n  ngOnInit(): void {\r\n    this.subscribeToDataChange();\r\n  }\r\n\r\n  serviceSubscription?: Subscription;\r\n  subscribeToDataChange(): void {\r\n    this.serviceSubscription = this.skeletonService.dataObservable$.subscribe(\r\n      (data) => {\r\n        this.handleDataChange(data);\r\n      }\r\n    );\r\n  }\r\n\r\n  ngOnDestroy(): void {\r\n    if (this.serviceSubscription) {\r\n      this.serviceSubscription.unsubscribe();\r\n    }\r\n  }\r\n}\r\n",
+            "providers": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "propertiesClass": [
+                {
+                    "name": "serviceSubscription",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Subscription",
+                    "optional": true,
+                    "description": "",
+                    "line": 16
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "handleDataChange",
+                    "args": [
+                        {
+                            "name": "data",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 8,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        126
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "data",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngOnDestroy",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 25,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "subscribeToDataChange",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "implements": [
+                "OnDestroy",
+                "OnInit"
+            ],
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "skeletonService",
+                        "type": "SkeletonService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 8,
+                "jsdoctags": [
+                    {
+                        "name": "skeletonService",
+                        "type": "SkeletonService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "components": [
+        {
+            "name": "NgSkeletonComponent",
+            "id": "component-NgSkeletonComponent-ef4feac0ef248f51fe6256782ef79b835c817dc396da5a4aa532ad526599abf3bc9129f9bf0a1270c5707385fcf9e0149faf040779a68e50d731f5290df170fc",
+            "file": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [
+                {
+                    "name": "SkeletonService"
+                }
+            ],
+            "selector": "ng-skeleton",
+            "styleUrls": [],
+            "styles": [
+                "\n      :host {\n        display: block;\n        position: relative;\n        width: max-content;\n      }\n      .ng-skeleton-loader {\n        position: absolute;\n        top: 0;\n        left: 0;\n        overflow: hidden;\n        width: 100%;\n        height: 100%;\n        z-index: 1;\n      }\n      .ng-skeleton-content {\n        display: contents;\n      }\n    "
+            ],
+            "template": "<ng-content></ng-content>\n<div class=\"ng-skeleton-loader\" *ngIf=\"loading\">\n  <ng-container *ngComponentOutlet=\"loaderComponent\"></ng-container>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "data",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nThis prop will get the data from `ngSkeletonData` attribute\n",
+                    "description": "<p>This prop will get the data from <code>ngSkeletonData</code> attribute</p>\n",
+                    "line": 54,
+                    "type": "",
+                    "decorators": []
+                },
+                {
+                    "name": "loaderComponent",
+                    "defaultValue": "NgSkeletonShinyLoaderComponent",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nThis can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered\n",
+                    "description": "<p>This can be used to show a custom component as a loader, by default the inbuilt <code>NgSkeletonDefaultLoaderComponent</code> component is rendered</p>\n",
+                    "line": 49,
+                    "type": "Type<>",
+                    "decorators": []
+                },
+                {
+                    "name": "loading",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nIf `true` the ng content will be hidden\n",
+                    "description": "<p>If <code>true</code> the ng content will be hidden</p>\n",
+                    "line": 44,
+                    "type": "boolean",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnChanges",
+                    "args": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 58,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input, SimpleChanges, Type } from '@angular/core';\r\n\r\nimport { CommonModule } from '@angular/common';\r\nimport { NgSkeletonShinyLoaderComponent } from './loaders/shiny-loader.component';\r\nimport { SkeletonService } from './ng-skeleton.service';\r\n\r\n@Component({\r\n  selector: 'ng-skeleton',\r\n  standalone: true,\r\n  imports: [CommonModule],\r\n  providers: [SkeletonService],\r\n  template: `\r\n    <ng-content></ng-content>\r\n    <div class=\"ng-skeleton-loader\" *ngIf=\"loading\">\r\n      <ng-container *ngComponentOutlet=\"loaderComponent\"></ng-container>\r\n    </div>\r\n  `,\r\n  styles: [\r\n    `\r\n      :host {\r\n        display: block;\r\n        position: relative;\r\n        width: max-content;\r\n      }\r\n      .ng-skeleton-loader {\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0;\r\n        overflow: hidden;\r\n        width: 100%;\r\n        height: 100%;\r\n        z-index: 1;\r\n      }\r\n      .ng-skeleton-content {\r\n        display: contents;\r\n      }\r\n    `,\r\n  ],\r\n})\r\nexport class NgSkeletonComponent {\r\n  /**\r\n   * If `true` the ng content will be hidden\r\n   */\r\n  @Input() loading = false;\r\n\r\n  /**\r\n   * This can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered\r\n   */\r\n  @Input() loaderComponent: Type<unknown> = NgSkeletonShinyLoaderComponent;\r\n\r\n  /**\r\n   * This prop will get the data from `ngSkeletonData` attribute\r\n   */\r\n  @Input() data?: unknown;\r\n\r\n  constructor(private skeletonService: SkeletonService) {}\r\n\r\n  ngOnChanges(changes: SimpleChanges): void {\r\n    if (changes['data']) {\r\n      this.skeletonService.dataObservable$.next(this.data);\r\n    }\r\n  }\r\n}\r\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n      :host {\n        display: block;\n        position: relative;\n        width: max-content;\n      }\n      .ng-skeleton-loader {\n        position: absolute;\n        top: 0;\n        left: 0;\n        overflow: hidden;\n        width: 100%;\n        height: 100%;\n        z-index: 1;\n      }\n      .ng-skeleton-content {\n        display: contents;\n      }\n    \n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "skeletonService",
+                        "type": "SkeletonService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 54,
+                "jsdoctags": [
+                    {
+                        "name": "skeletonService",
+                        "type": "SkeletonService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "NgSkeletonShinyLoaderComponent",
+            "id": "component-NgSkeletonShinyLoaderComponent-710a3c06bd06aa7773bc85a2367ebba08891c611a3024d04f9580e5f8228ab91ea61cb433d5b4b8ba7cc13baca88908c2304d9374d18e1770903fde00ea8c25b",
+            "file": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "shiny-loader",
+            "styleUrls": [],
+            "styles": [
+                "\n      :host {\n        display: block;\n        height: 100%;\n        width: 100%;\n      }\n\n      .shiny-skeleton {\n        --shiny-bg-side: #ececea;\n        --shiny-bg-center: lightgrey;\n        width: 100%;\n        height: 100%;\n        animation-duration: 1000ms;\n        animation-fill-mode: forwards;\n        animation-iteration-count: infinite;\n        animation-name: loadingAnimation;\n        animation-timing-function: cubic-bezier(0.35, 0, 0.5, 1);\n        background-image: linear-gradient(\n          to right,\n          var(--shiny-bg-side) 8%,\n          var(--shiny-bg-center) 18%,\n          var(--shiny-bg-side) 33%\n        );\n        background-size: 200%;\n      }\n\n      @keyframes loadingAnimation {\n        0% {\n          background-position: 100% 0;\n        }\n        100% {\n          background-position: -100% 0;\n        }\n      }\n    "
+            ],
+            "template": "<div\n  class=\"shiny-skeleton\"\n  [ngStyle]=\"loaderStyle\"\n  [style]=\"'--shiny-bg-side: ' + color1 + ';--shiny-bg-center: ' + color2\"\n></div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "color1",
+                    "defaultValue": "'#ececea'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 68
+                },
+                {
+                    "name": "color2",
+                    "defaultValue": "'lightgrey'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 69
+                },
+                {
+                    "name": "loaderStyle",
+                    "defaultValue": "{}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Record<string | string>",
+                    "optional": false,
+                    "description": "",
+                    "line": 67
+                },
+                {
+                    "name": "serviceSubscription",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Subscription",
+                    "optional": true,
+                    "description": "",
+                    "line": 16,
+                    "inheritance": {
+                        "file": "NgSkeletonLoader"
+                    }
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "handleDataChange",
+                    "args": [
+                        {
+                            "name": "data",
+                            "type": "ShinyLoaderData",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 70,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        158
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "data",
+                            "type": "ShinyLoaderData",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "NgSkeletonLoader"
+                    }
+                },
+                {
+                    "name": "ngOnDestroy",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 25,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "inheritance": {
+                        "file": "NgSkeletonLoader"
+                    }
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "inheritance": {
+                        "file": "NgSkeletonLoader"
+                    }
+                },
+                {
+                    "name": "subscribeToDataChange",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "inheritance": {
+                        "file": "NgSkeletonLoader"
+                    }
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { NgStyle } from '@angular/common';\r\nimport { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';\r\nimport { NgSkeletonLoader } from '../ng-skeleton.interface';\r\nimport { SkeletonService } from '../ng-skeleton.service';\r\n\r\n@Component({\r\n  selector: 'shiny-loader',\r\n  standalone: true,\r\n  imports: [NgStyle],\r\n  template: `\r\n    <div\r\n      class=\"shiny-skeleton\"\r\n      [ngStyle]=\"loaderStyle\"\r\n      [style]=\"'--shiny-bg-side: ' + color1 + ';--shiny-bg-center: ' + color2\"\r\n    ></div>\r\n  `,\r\n  styles: [\r\n    `\r\n      :host {\r\n        display: block;\r\n        height: 100%;\r\n        width: 100%;\r\n      }\r\n\r\n      .shiny-skeleton {\r\n        --shiny-bg-side: #ececea;\r\n        --shiny-bg-center: lightgrey;\r\n        width: 100%;\r\n        height: 100%;\r\n        animation-duration: 1000ms;\r\n        animation-fill-mode: forwards;\r\n        animation-iteration-count: infinite;\r\n        animation-name: loadingAnimation;\r\n        animation-timing-function: cubic-bezier(0.35, 0, 0.5, 1);\r\n        background-image: linear-gradient(\r\n          to right,\r\n          var(--shiny-bg-side) 8%,\r\n          var(--shiny-bg-center) 18%,\r\n          var(--shiny-bg-side) 33%\r\n        );\r\n        background-size: 200%;\r\n      }\r\n\r\n      @keyframes loadingAnimation {\r\n        0% {\r\n          background-position: 100% 0;\r\n        }\r\n        100% {\r\n          background-position: -100% 0;\r\n        }\r\n      }\r\n    `,\r\n  ],\r\n  changeDetection: ChangeDetectionStrategy.OnPush\r\n})\r\nexport class NgSkeletonShinyLoaderComponent\r\n  extends NgSkeletonLoader\r\n  implements OnInit\r\n{\r\n  constructor(\r\n    skeletonService: SkeletonService,\r\n    private cdr: ChangeDetectorRef\r\n  ) {\r\n    super(skeletonService);\r\n  }\r\n\r\n  loaderStyle: Record<string, string> = {};\r\n  color1: string = '#ececea';\r\n  color2: string = 'lightgrey';\r\n  override handleDataChange(data: ShinyLoaderData): void {\r\n    const shape = data?.shape;\r\n\r\n    switch (shape) {\r\n      case 'circle': {\r\n        const size = data?.size || '1rem';\r\n        this.loaderStyle = {\r\n          borderRadius: '50%',\r\n          width: size,\r\n          height: size,\r\n        };\r\n        break;\r\n      }\r\n      case 'square': {\r\n        const size = data?.size || '1rem';\r\n        this.loaderStyle = {\r\n          borderRadius: data?.borderRadius || '0.25rem',\r\n          width: size,\r\n          height: size,\r\n        };\r\n        break;\r\n      }\r\n\r\n      case 'rectangle': {\r\n        const width = data?.width || '1rem';\r\n        const height = data?.height || '1rem';\r\n        this.loaderStyle = {\r\n          borderRadius: data?.borderRadius || '0.25rem',\r\n          width,\r\n          height,\r\n        };\r\n        break;\r\n      }\r\n\r\n      default: {\r\n        this.loaderStyle = {\r\n          borderRadius: data?.borderRadius || '0.25rem',\r\n        };\r\n        break;\r\n      }\r\n    }\r\n\r\n    if (data.loaderColor1 && data.loaderColor2) {\r\n      this.color1 = data.loaderColor1;\r\n      this.color2 = data.loaderColor2;\r\n    }\r\n\r\n    this.cdr.detectChanges();\r\n  }\r\n}\r\n\r\nexport type ShinyLoaderData = (FullSize | Circle | Square | Rectangle) & {\r\n  loaderColor1?: string;\r\n  loaderColor2?: string;\r\n};\r\n\r\nexport type FullSize = {\r\n  shape: 'fullSize';\r\n  borderRadius?: string;\r\n};\r\n\r\nexport type Circle = {\r\n  shape: 'circle';\r\n  size: string;\r\n};\r\n\r\nexport type Square = {\r\n  shape: 'square';\r\n  size: string;\r\n  borderRadius?: string;\r\n};\r\n\r\nexport type Rectangle = {\r\n  shape: 'rectangle';\r\n  borderRadius?: string;\r\n  width: string;\r\n  height: string;\r\n};\r\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n      :host {\n        display: block;\n        height: 100%;\n        width: 100%;\n      }\n\n      .shiny-skeleton {\n        --shiny-bg-side: #ececea;\n        --shiny-bg-center: lightgrey;\n        width: 100%;\n        height: 100%;\n        animation-duration: 1000ms;\n        animation-fill-mode: forwards;\n        animation-iteration-count: infinite;\n        animation-name: loadingAnimation;\n        animation-timing-function: cubic-bezier(0.35, 0, 0.5, 1);\n        background-image: linear-gradient(\n          to right,\n          var(--shiny-bg-side) 8%,\n          var(--shiny-bg-center) 18%,\n          var(--shiny-bg-side) 33%\n        );\n        background-size: 200%;\n      }\n\n      @keyframes loadingAnimation {\n        0% {\n          background-position: 100% 0;\n        }\n        100% {\n          background-position: -100% 0;\n        }\n      }\n    \n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "skeletonService",
+                        "type": "SkeletonService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "cdr",
+                        "type": "ChangeDetectorRef",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 59,
+                "jsdoctags": [
+                    {
+                        "name": "skeletonService",
+                        "type": "SkeletonService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "cdr",
+                        "type": "ChangeDetectorRef",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "extends": "NgSkeletonLoader",
+            "implements": [
+                "OnInit"
+            ]
+        }
+    ],
+    "modules": [
+        {
+            "name": "NgSkeletonModule",
+            "id": "module-NgSkeletonModule-761ff01800d6e74eda56c6afd44a7dc29a7155443ea38d477b1890b7f353947a3fbdefcfaf47d0109b917a2ef9eda88922b5a8161ff38caffd95ae8d993870f5",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.module.ts",
+            "methods": [],
+            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { NgSkeletonDirective } from './ng-skeleton.directive';\r\n\r\n@NgModule({\r\n  declarations: [NgSkeletonDirective],\r\n  imports: [],\r\n  exports: [NgSkeletonDirective],\r\n})\r\nexport class NgSkeletonModule {}\r\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "NgSkeletonDirective"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "NgSkeletonDirective"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        }
+    ],
+    "miscellaneous": {
+        "variables": [
+            {
+                "name": "Basic",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<DirectiveType>",
+                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <h1 style=\"min-width: 120px; min-height: 40px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    Heading\n  </h1>\n\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    First paragraph with some content\n  </p>\n\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    Second paragraph with some content\n  </p>\n  `,\n})"
+            },
+            {
+                "name": "Circle",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<DirectiveType>",
+                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <div style=\"width: 100px; height: 100px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    <img style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"https://www.w3schools.com/howto/img_avatar.png\"/>\n  </div>\n\n  `,\n})"
+            }
+        ],
+        "functions": [],
+        "typealiases": [
+            {
+                "name": "Circle",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "literal type",
+                "file": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 181
+            },
+            {
+                "name": "DirectiveType",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "literal type",
+                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 181
+            },
+            {
+                "name": "FullSize",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "literal type",
+                "file": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 181
+            },
+            {
+                "name": "Rectangle",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "literal type",
+                "file": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 181
+            },
+            {
+                "name": "ShinyLoaderData",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "",
+                "file": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 187
+            },
+            {
+                "name": "Square",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "literal type",
+                "file": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 181
+            }
+        ],
+        "enumerations": [],
+        "groupedVariables": {
+            "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts": [
+                {
+                    "name": "Basic",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<DirectiveType>",
+                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <h1 style=\"min-width: 120px; min-height: 40px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    Heading\n  </h1>\n\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    First paragraph with some content\n  </p>\n\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    Second paragraph with some content\n  </p>\n  `,\n})"
+                },
+                {
+                    "name": "Circle",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<DirectiveType>",
+                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <div style=\"width: 100px; height: 100px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    <img style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"https://www.w3schools.com/howto/img_avatar.png\"/>\n  </div>\n\n  `,\n})"
+                }
+            ]
+        },
+        "groupedFunctions": {},
+        "groupedEnumerations": {},
+        "groupedTypeAliases": {
+            "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts": [
+                {
+                    "name": "Circle",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "literal type",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 181
+                },
+                {
+                    "name": "FullSize",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "literal type",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 181
+                },
+                {
+                    "name": "Rectangle",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "literal type",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 181
+                },
+                {
+                    "name": "ShinyLoaderData",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 187
+                },
+                {
+                    "name": "Square",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "literal type",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 181
+                }
+            ],
+            "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts": [
+                {
+                    "name": "DirectiveType",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "literal type",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 181
+                }
+            ]
+        }
+    },
+    "routes": [],
+    "coverage": {
+        "count": 11,
+        "status": "low",
+        "files": [
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Basic",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Circle",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "NgSkeletonShinyLoaderComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/10",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "NgSkeletonComponent",
+                "coveragePercent": 50,
+                "coverageCount": "3/6",
+                "status": "medium"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.directive.ts",
+                "type": "directive",
+                "linktype": "directive",
+                "name": "NgSkeletonDirective",
+                "coveragePercent": 33,
+                "coverageCount": "4/12",
+                "status": "medium"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.interface.ts",
+                "type": "directive",
+                "linktype": "directive",
+                "name": "NgSkeletonLoader",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "SkeletonService",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            }
+        ]
+    }
+}

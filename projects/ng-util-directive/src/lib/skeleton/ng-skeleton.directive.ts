@@ -38,7 +38,7 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges {
   @Input() ngSkeletonData: ShinyLoaderData | unknown;
 
   /**
-   * If `true` the dom element get hidden with visibility: hidden
+   * If `true` the dom element will be hidden with visibility: hidden
    */
   @Input() ngSkeletonHideOnLoading = true;
 
