@@ -1,6 +1,15 @@
-<button *ngSkeleton="loading; data: skeletonData; hideOnLoading: true">Test</button>
+<button *ngSkeleton="loading; data: skeletonData; hideOnLoading: true">
+  Test
+</button>
 <br />
 <br />
 <button (click)="handleToggle()">Toggle Loading</button>
 <br />
-<button (click)="updateSkeletonData()">Update Skeleton Data</button>
+<br />
+<button (click)="updateSkeletonData('circle')">Circle Skeleton</button>
+<br />
+<button (click)="updateSkeletonData('square')">Square Skeleton</button>
+<br />
+<button (click)="updateSkeletonData('rectangle')">Rectangle Skeleton</button>
+<br />
+<button (click)="updateSkeletonData('fullSize')">FullSize Skeleton</button>

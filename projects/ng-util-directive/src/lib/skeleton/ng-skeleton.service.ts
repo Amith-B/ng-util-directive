@@ -3,5 +3,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class SkeletonService {
-  dataObservable$ = new BehaviorSubject<unknown>(undefined);
+  dataObservable$ = new BehaviorSubject<unknown>({
+    shape: 'fullSize',
+  });
 }

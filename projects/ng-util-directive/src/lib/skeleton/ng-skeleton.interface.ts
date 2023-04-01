@@ -1,13 +1,15 @@
-import { Directive, OnDestroy } from '@angular/core';
+import { Directive, OnDestroy, OnInit } from '@angular/core';
 
 import { SkeletonService } from './ng-skeleton.service';
 import { Subscription } from 'rxjs';
 
 @Directive()
-export abstract class NgSkeletonLoader implements OnDestroy {
+export abstract class NgSkeletonLoader implements OnDestroy, OnInit {
   abstract handleDataChange(data: unknown): void;
 
-  constructor(private skeletonService: SkeletonService) {
+  constructor(private skeletonService: SkeletonService) {}
+
+  ngOnInit(): void {
     this.subscribeToDataChange();
   }
 

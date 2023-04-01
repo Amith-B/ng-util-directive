@@ -18,14 +18,14 @@ import { SkeletonService } from './ng-skeleton.service';
   styles: [
     `
       :host {
-        display: inline-block;
+        display: block;
         position: relative;
+        width: max-content;
       }
       .ng-skeleton-loader {
         position: absolute;
         top: 0;
         left: 0;
-        border-radius: 0.25rem;
         overflow: hidden;
         width: 100%;
         height: 100%;

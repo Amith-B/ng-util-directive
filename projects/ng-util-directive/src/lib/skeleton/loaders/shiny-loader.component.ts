@@ -1,10 +1,19 @@
-import { Component } from '@angular/core';
+import { NgStyle } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgSkeletonLoader } from '../ng-skeleton.interface';
+import { SkeletonService } from '../ng-skeleton.service';
 
 @Component({
   selector: 'shiny-loader',
   standalone: true,
-  template: ` <div class="shiny-skeleton"></div> `,
+  imports: [NgStyle],
+  template: `
+    <div
+      class="shiny-skeleton"
+      [ngStyle]="loaderStyle"
+      [style]="'--shiny-bg-side: ' + color1 + ';--shiny-bg-center: ' + color2"
+    ></div>
+  `,
   styles: [
     `
       :host {
@@ -42,12 +51,82 @@ import { NgSkeletonLoader } from '../ng-skeleton.interface';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NgSkeletonShinyLoaderComponent extends NgSkeletonLoader {
-  override handleDataChange(data: unknown): void {
-    console.log(data);
+export class NgSkeletonShinyLoaderComponent
+  extends NgSkeletonLoader
+  implements OnInit
+{
+  constructor(
+    skeletonService: SkeletonService,
+    private cdr: ChangeDetectorRef
+  ) {
+    super(skeletonService);
+  }
+
+  loaderStyle: Record<string, string> = {};
+  color1: string = '#ececea';
+  color2: string = 'lightgrey';
+  override handleDataChange(data: ShinyLoaderData): void {
+    const shape = data?.shape;
+
+    switch (shape) {
+      case 'circle': {
+        const size = data?.size || '1rem';
+        this.loaderStyle = {
+          borderRadius: '50%',
+          width: size,
+          height: size,
+        };
+        break;
+      }
+      case 'square': {
+        const size = data?.size || '1rem';
+        this.loaderStyle = {
+          borderRadius: data?.borderRadius || '0.25rem',
+          width: size,
+          height: size,
+        };
+        break;
+      }
+
+      case 'rectangle': {
+        const width = data?.width || '1rem';
+        const height = data?.height || '1rem';
+        this.loaderStyle = {
+          borderRadius: data?.borderRadius || '0.25rem',
+          width,
+          height,
+        };
+        break;
+      }
+
+      default: {
+        this.loaderStyle = {
+          borderRadius: data?.borderRadius || '0.25rem',
+        };
+        break;
+      }
+    }
+
+    if (data.loaderColor1 && data.loaderColor2) {
+      this.color1 = data.loaderColor1;
+      this.color2 = data.loaderColor2;
+    }
+
+    this.cdr.detectChanges();
   }
 }
+
+export type ShinyLoaderData = (FullSize | Circle | Square | Rectangle) & {
+  loaderColor1?: string;
+  loaderColor2?: string;
+};
+
+export type FullSize = {
+  shape: 'fullSize';
+  borderRadius?: string;
+};
 
 export type Circle = {
   shape: 'circle';
@@ -57,10 +136,12 @@ export type Circle = {
 export type Square = {
   shape: 'square';
   size: string;
+  borderRadius?: string;
 };
 
 export type Rectangle = {
-  shape: 'square';
+  shape: 'rectangle';
+  borderRadius?: string;
   width: string;
   height: string;
 };

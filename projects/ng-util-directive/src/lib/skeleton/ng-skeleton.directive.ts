@@ -11,7 +11,10 @@ import {
 } from '@angular/core';
 
 import { NgSkeletonComponent } from './ng-skeleton.component';
-import { NgSkeletonShinyLoaderComponent } from './loaders/shiny-loader.component';
+import {
+  NgSkeletonShinyLoaderComponent,
+  ShinyLoaderData,
+} from './loaders/shiny-loader.component';
 
 @Directive({
   selector: '[ngSkeleton]',
@@ -30,8 +33,9 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges {
 
   /**
    * This can be used to pass any object data to the skeleton component
+   * `ShinyLoaderData` - default type
    */
-  @Input() ngSkeletonData: unknown;
+  @Input() ngSkeletonData: ShinyLoaderData | unknown;
 
   /**
    * If `true` the dom element get hidden with visibility: hidden
