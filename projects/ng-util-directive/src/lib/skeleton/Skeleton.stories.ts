@@ -3,7 +3,7 @@ import { NgSkeletonModule } from './ng-skeleton.module';
 import { moduleMetadata } from '@storybook/angular';
 
 export default {
-  title: 'Skeleton/NgSkeleton',
+  title: 'Directives/NgSkeleton',
   decorators: [
     moduleMetadata({
       imports: [NgSkeletonModule],
@@ -70,11 +70,19 @@ BasicFullSize.args = {
 export const Circle: Story<DirectiveType> = (args: DirectiveType) => ({
   props: args,
   template: `
-  <div style="width: 100px; height: 100px" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading">
-    <img style="width: 100%; height: 100%; border-radius: 50%;" src="avatar.svg"/>
-    <!-- Usage: <img (load)="ngSkeleton = false" style="width: 100%; height: 100%; border-radius: 50%;" src="avatar.svg"/>-->
-  </div>
-
+  <img
+    *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading"
+    style="width: 100px; height: 100px; border-radius: 50%;"
+    src="avatar.svg"
+  />
+  <!-- Usage: 
+  <img
+    (load)="ngSkeleton = false"
+    *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading"
+    style="width: 100px; height: 100px; border-radius: 50%;"
+    src="avatar.svg"
+  />
+  -->
   `,
 });
 
@@ -90,11 +98,8 @@ Circle.args = {
 export const Square: Story<DirectiveType> = (args: DirectiveType) => ({
   props: args,
   template: `
-  <div style="width: 200px; height: 200px" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading">
-    <img style="width: 100%; height: 100%; border-radius: 20px;" src="art.jpg"/>
-    <!-- Usage: <img (load)="ngSkeleton = false" style="width: 100%; height: 100%; border-radius: 50%;" src="art.jpg"/>-->
-  </div>
-
+    <img  *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 200px; height: 200px; border-radius: 20px;" src="art.jpg"/>
+    <!-- Usage: <img (load)="ngSkeleton = false" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 100%; height: 100%; border-radius: 50%;" src="art.jpg"/>-->
   `,
 });
 
@@ -111,10 +116,8 @@ Square.args = {
 export const Rectangle: Story<DirectiveType> = (args: DirectiveType) => ({
   props: args,
   template: `
-  <div style="width: 400px; height: 200px" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading">
-    <img style="width: 100%; height: 100%; border-radius: 20px;" src="art.jpg"/>
-    <!-- Usage: <img (load)="ngSkeleton = false" style="width: 100%; height: 100%; border-radius: 50%;" src="art.jpg"/>-->
-  </div>
+  <img  *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 400px; height: 200px; border-radius: 20px;" src="art.jpg"/>
+  <!-- Usage: <img (load)="ngSkeleton = false" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 400px; height: 200px; border-radius: 50%;" src="art.jpg"/>-->
 
   `,
 });
