@@ -72,7 +72,7 @@ export default {
       description:
         'This can be used to pass any object data to the skeleton component. <br/>You can use your own Skeleton component with `component` prop',
       control: 'object',
-      defaultValue: { summary: 'ShinyLoaderData' },
+      defaultValue: { summary: `ShinyLoaderData -> { shape: 'fullSize'}` },
     },
     hideOnLoading: {
       description:
