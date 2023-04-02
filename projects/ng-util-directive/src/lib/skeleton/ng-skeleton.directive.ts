@@ -2,8 +2,11 @@ import {
   AfterViewInit,
   ComponentRef,
   Directive,
+  Inject,
+  InjectionToken,
   Input,
   OnChanges,
+  Optional,
   SimpleChanges,
   TemplateRef,
   Type,
@@ -44,8 +47,15 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges {
 
   constructor(
     private tpl: TemplateRef<unknown>,
-    private vcr: ViewContainerRef
-  ) {}
+    private vcr: ViewContainerRef,
+    @Optional()
+    @Inject(GLOBAL_SKELETON_LOADER_COMPONENT)
+    globalLoaderComponent: Type<unknown>
+  ) {
+    if (globalLoaderComponent) {
+      this.ngSkeletonComponent = globalLoaderComponent;
+    }
+  }
 
   ngContentNodes?: any[];
   componentRef!: ComponentRef<NgSkeletonComponent>;
@@ -82,3 +92,7 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges {
     }
   }
 }
+
+export const GLOBAL_SKELETON_LOADER_COMPONENT = new InjectionToken<
+  Type<unknown>
+>('SKELETON_LOADER_COMPONENT');

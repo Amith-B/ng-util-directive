@@ -710,7 +710,7 @@
     "miscellaneous": {
         "variables": [
             {
-                "name": "Basic",
+                "name": "BasicFullSize",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
@@ -727,7 +727,37 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<DirectiveType>",
-                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <div style=\"width: 100px; height: 100px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    <img style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"https://www.w3schools.com/howto/img_avatar.png\"/>\n  </div>\n\n  `,\n})"
+                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <img\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\n    src=\"avatar.svg\"\n  />\n  <!-- Usage: \n  <img\n    (load)=\"ngSkeleton = false\"\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\n    src=\"avatar.svg\"\n  />\n  -->\n  `,\n})"
+            },
+            {
+                "name": "CustomColor",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<DirectiveType>",
+                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\n  `,\n})"
+            },
+            {
+                "name": "Rectangle",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<DirectiveType>",
+                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n  <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 50%;\" src=\"art.jpg\"/>-->\n\n  `,\n})"
+            },
+            {
+                "name": "Square",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<DirectiveType>",
+                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\n  `,\n})"
             }
         ],
         "functions": [],
@@ -803,7 +833,7 @@
         "groupedVariables": {
             "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts": [
                 {
-                    "name": "Basic",
+                    "name": "BasicFullSize",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
@@ -820,7 +850,37 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<DirectiveType>",
-                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <div style=\"width: 100px; height: 100px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    <img style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"https://www.w3schools.com/howto/img_avatar.png\"/>\n  </div>\n\n  `,\n})"
+                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <img\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\n    src=\"avatar.svg\"\n  />\n  <!-- Usage: \n  <img\n    (load)=\"ngSkeleton = false\"\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\n    src=\"avatar.svg\"\n  />\n  -->\n  `,\n})"
+                },
+                {
+                    "name": "CustomColor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<DirectiveType>",
+                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\n  `,\n})"
+                },
+                {
+                    "name": "Rectangle",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<DirectiveType>",
+                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n  <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 50%;\" src=\"art.jpg\"/>-->\n\n  `,\n})"
+                },
+                {
+                    "name": "Square",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<DirectiveType>",
+                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\n  `,\n})"
                 }
             ]
         },
@@ -901,7 +961,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 11,
+        "count": 8,
         "status": "low",
         "files": [
             {
@@ -909,7 +969,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "Basic",
+                "name": "BasicFullSize",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -920,6 +980,36 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Circle",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "CustomColor",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Rectangle",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Square",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
