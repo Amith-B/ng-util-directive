@@ -1,11 +1,63 @@
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { NgSkeletonModule } from './ng-skeleton.module';
+import { NgSkeletonModule } from '../ng-skeleton.module';
 import { moduleMetadata } from '@storybook/angular';
+import { Component, OnInit } from '@angular/core';
+import { NgSkeletonPercentLoaderComponent } from './custom-skeleton-loader.component';
+
+@Component({
+  selector: 'custom-percent-loader',
+  template: `
+    <img
+      *ngSkeleton="
+        true;
+        data: { percent };
+        hideOnLoading: false;
+        component: component
+      "
+      style="width: 400px; height: 200px; border-radius: 20px;"
+      src="art.jpg"
+    />
+  `,
+})
+class CustomLoaderComponent implements OnInit {
+  percent: number = 0;
+  component = NgSkeletonPercentLoaderComponent;
+
+  ngOnInit(): void {
+    setInterval(() => {
+      if (this.percent >= 100) {
+        this.percent = 0;
+      } else {
+        if (Math.random() > 0.5) {
+          this.percent += 5;
+        } else {
+          this.percent += 15;
+        }
+
+        if (this.percent > 100) {
+          this.percent = 100;
+        }
+      }
+    }, 1000);
+  }
+}
+
+const CustomLoaderTemplate: Story<CustomLoaderComponent> = (
+  args: CustomLoaderComponent
+) => ({
+  component: CustomLoaderComponent,
+  props: args,
+});
+
+export const CustomLoader = CustomLoaderTemplate.bind({});
+
+CustomLoader.args = {};
 
 export default {
   title: 'Directives/NgSkeleton',
   decorators: [
     moduleMetadata({
+      declarations: [CustomLoaderComponent],
       imports: [NgSkeletonModule],
     }),
   ],

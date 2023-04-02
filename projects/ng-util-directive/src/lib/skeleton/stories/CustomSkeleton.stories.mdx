@@ -1,0 +1,162 @@
+import { Meta, Story } from "@storybook/addon-docs/blocks";
+
+<Meta
+  title="Directives/NgSkeleton/Guide: Custom skeleton component creation"
+  parameters={{
+    viewMode: "docs",
+    previewTabs: {
+      canvas: { hidden: true },
+    },
+  }}
+/>
+
+# Create your own skeleton component
+
+<br />
+
+## Example for custom skeleton component
+
+<Story id="directives-ngskeleton--custom-loader" />
+
+You can create your own skeleton component as shown in below code
+
+```typescript ts
+import { NgStyle } from "@angular/common";
+import { Component } from "@angular/core";
+import { NgSkeletonLoader } from "ng-util-directive";
+
+@Component({
+  selector: "percent-loader",
+  standalone: true,
+  imports: [NgStyle],
+  template: ` <div class="percent-skeleton" [ngStyle]="loaderStyle"></div> `,
+  styles: [
+    `
+      :host {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+
+      .percent-skeleton {
+        height: 100%;
+        border-radius: 20px;
+        background-color: #00ffa194;
+        transition: 0.5s cubic-bezier(0.35, 0, 0.5, 1);
+      }
+    `,
+  ],
+})
+export class NgSkeletonPercentLoaderComponent extends NgSkeletonLoader {
+  loaderStyle: Record<string, string> = {
+    width: "0%",
+  };
+
+  handleDataChange(data: { percent: number }): void {
+    const percent = data?.percent;
+
+    this.loaderStyle = {
+      width: `${percent}%`,
+    };
+  }
+}
+```
+
+```typescript ts
+@Component({
+  selector: "image-upload",
+  template: `
+    <img
+      *ngSkeleton="
+          true;
+          data: { percent };
+          hideOnLoading: false;
+          component: component
+        "
+      style="width: 400px; height: 200px; border-radius: 20px;"
+      src="art.jpg"
+    />
+  `,
+})
+class ImageUploadComponent implements OnInit {
+  percent: number = 0;
+  component = NgSkeletonPercentLoaderComponent;
+
+  handleUpload(percent: number): void {
+    this.percent = percent;
+  }
+}
+```
+
+## How to use custom skeleton component
+
+The custom skeleton component can be used in two ways:
+
+1. Pass custom component as `component` prop for each `ngSkeleton` directive
+
+```typescript ts
+@Component({
+  template: `
+    <img
+      *ngSkeleton="
+        loading;
+        data: { shape: 'fullSize' };
+        component: YourOwnSkeletonComponent;
+        hideOnLoading: true
+      "
+      style="width: 200px; height: 200px;"
+      src="art.jpg"
+    />
+  `,
+})
+class TestComponent {
+  YourOwnSkeletonComponent = YourOwnSkeletonComponent;
+}
+```
+
+2. Configure the custom component as a global skeleton component with `GLOBAL_SKELETON_LOADER_COMPONENT` provider
+
+```typescript ts
+import { GLOBAL_SKELETON_LOADER_COMPONENT } from 'ng-util-directive';
+
+@NgModule({
+  providers: [
+    {
+      provide: GLOBAL_SKELETON_LOADER_COMPONENT,
+      useValue: YourOwnSkeletonComponent
+    }
+  ]
+  ...
+})
+export class AppModule { }
+```
+
+## How to create a custom skeleton component
+
+1. Create a class component and extend `NgSkeletonLoader` class from `ng-util-directive`
+1. Declare the abstract method `handleDataChange` which accepts the `data` as parameter, this method will be called with the new data whenever it is updated with `data` prop of `ngSkeleton`
+
+```typescript ts
+import { NgSkeletonLoader } from "ng-util-directive";
+
+@Component({
+  template: `
+    <div
+      class="skeleton"
+      style="height: 100%; width: 100%; background-color: orange;"
+    ></div>
+  `,
+  styles: [
+    `
+      .skeleton {
+        z-index: 1000;
+      }
+    `,
+  ],
+})
+class YourOwnSkeletonComponent extends NgSkeletonLoader {
+  handleDataChange(data: unknown): void {
+    // UseCase: with this data you can do any operations like changing the template styles
+  }
+}
+```

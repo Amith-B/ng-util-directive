@@ -33,12 +33,12 @@
     "directives": [
         {
             "name": "NgSkeletonDirective",
-            "id": "directive-NgSkeletonDirective-48f35fba0bad6f1196c5f551442d5aa57ec856872c7756fb28c5b20e5f7499ac1f6126ccb1c0977373e59a1addb3691ac767da33ad33e2d5edfb027cb7939503",
+            "id": "directive-NgSkeletonDirective-eb1bec3c4cdceae139f2a2139d5ecf7b74393f66ef41d5197239ec77c4494c5932c678315a334aae02eb58f264a75967dcc71809f826be2d38dfd5a7da8f6077",
             "file": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.directive.ts",
             "type": "directive",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ComponentRef,\r\n  Directive,\r\n  Input,\r\n  OnChanges,\r\n  SimpleChanges,\r\n  TemplateRef,\r\n  Type,\r\n  ViewContainerRef,\r\n} from '@angular/core';\r\n\r\nimport { NgSkeletonComponent } from './ng-skeleton.component';\r\nimport {\r\n  NgSkeletonShinyLoaderComponent,\r\n  ShinyLoaderData,\r\n} from './loaders/shiny-loader.component';\r\n\r\n@Directive({\r\n  selector: '[ngSkeleton]',\r\n})\r\nexport class NgSkeletonDirective implements AfterViewInit, OnChanges {\r\n  /**\r\n   * If `true` this shows skeleton loader in place of dom element.\r\n   * It will take the height and width of the dom element\r\n   */\r\n  @Input() ngSkeleton = false;\r\n\r\n  /**\r\n   * This can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered\r\n   */\r\n  @Input() ngSkeletonComponent: Type<unknown> = NgSkeletonShinyLoaderComponent;\r\n\r\n  /**\r\n   * This can be used to pass any object data to the skeleton component\r\n   * `ShinyLoaderData` - default type\r\n   */\r\n  @Input() ngSkeletonData: ShinyLoaderData | unknown;\r\n\r\n  /**\r\n   * If `true` the dom element will be hidden with visibility: hidden\r\n   */\r\n  @Input() ngSkeletonHideOnLoading = true;\r\n\r\n  constructor(\r\n    private tpl: TemplateRef<unknown>,\r\n    private vcr: ViewContainerRef\r\n  ) {}\r\n\r\n  ngContentNodes?: any[];\r\n  componentRef!: ComponentRef<NgSkeletonComponent>;\r\n  ngAfterViewInit(): void {\r\n    this.ngContentNodes = this.tpl.createEmbeddedView({}).rootNodes;\r\n    this.componentRef = this.vcr.createComponent(NgSkeletonComponent, {\r\n      projectableNodes: [this.ngContentNodes],\r\n    });\r\n\r\n    this.updateInputs();\r\n    this.handleNodeVisibility();\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges): void {\r\n    this.updateInputs();\r\n    if (changes['ngSkeleton']) {\r\n      this.handleNodeVisibility();\r\n    }\r\n  }\r\n\r\n  handleNodeVisibility(): void {\r\n    if (this.ngSkeletonHideOnLoading && this.ngContentNodes) {\r\n      this.ngContentNodes.forEach((node: HTMLElement) => {\r\n        node.style.visibility = this.ngSkeleton ? 'hidden' : 'visible';\r\n      });\r\n    }\r\n  }\r\n\r\n  updateInputs(): void {\r\n    if (this.componentRef) {\r\n      this.componentRef.setInput('loading', this.ngSkeleton);\r\n      this.componentRef.setInput('loaderComponent', this.ngSkeletonComponent);\r\n      this.componentRef.setInput('data', this.ngSkeletonData);\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import {\r\n  AfterViewInit,\r\n  ComponentRef,\r\n  Directive,\r\n  Inject,\r\n  InjectionToken,\r\n  Input,\r\n  OnChanges,\r\n  Optional,\r\n  SimpleChanges,\r\n  TemplateRef,\r\n  Type,\r\n  ViewContainerRef,\r\n} from '@angular/core';\r\n\r\nimport { NgSkeletonComponent } from './ng-skeleton.component';\r\nimport {\r\n  NgSkeletonShinyLoaderComponent,\r\n  ShinyLoaderData,\r\n} from './loaders/shiny-loader.component';\r\n\r\n@Directive({\r\n  selector: '[ngSkeleton]',\r\n})\r\nexport class NgSkeletonDirective implements AfterViewInit, OnChanges {\r\n  /**\r\n   * If `true` this shows skeleton loader in place of dom element.\r\n   * It will take the height and width of the dom element\r\n   */\r\n  @Input() ngSkeleton = false;\r\n\r\n  /**\r\n   * This can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered\r\n   */\r\n  @Input() ngSkeletonComponent: Type<unknown> = NgSkeletonShinyLoaderComponent;\r\n\r\n  /**\r\n   * This can be used to pass any object data to the skeleton component\r\n   * `ShinyLoaderData` - default type\r\n   */\r\n  @Input() ngSkeletonData: ShinyLoaderData | unknown;\r\n\r\n  /**\r\n   * If `true` the dom element will be hidden with visibility: hidden\r\n   */\r\n  @Input() ngSkeletonHideOnLoading = true;\r\n\r\n  constructor(\r\n    private tpl: TemplateRef<unknown>,\r\n    private vcr: ViewContainerRef,\r\n    @Optional()\r\n    @Inject(GLOBAL_SKELETON_LOADER_COMPONENT)\r\n    globalLoaderComponent: Type<unknown>\r\n  ) {\r\n    if (globalLoaderComponent) {\r\n      this.ngSkeletonComponent = globalLoaderComponent;\r\n    }\r\n  }\r\n\r\n  ngContentNodes?: any[];\r\n  componentRef!: ComponentRef<NgSkeletonComponent>;\r\n  ngAfterViewInit(): void {\r\n    this.ngContentNodes = this.tpl.createEmbeddedView({}).rootNodes;\r\n    this.componentRef = this.vcr.createComponent(NgSkeletonComponent, {\r\n      projectableNodes: [this.ngContentNodes],\r\n    });\r\n\r\n    this.updateInputs();\r\n    this.handleNodeVisibility();\r\n  }\r\n\r\n  ngOnChanges(changes: SimpleChanges): void {\r\n    this.updateInputs();\r\n    if (changes['ngSkeleton']) {\r\n      this.handleNodeVisibility();\r\n    }\r\n  }\r\n\r\n  handleNodeVisibility(): void {\r\n    if (this.ngSkeletonHideOnLoading && this.ngContentNodes) {\r\n      this.ngContentNodes.forEach((node: HTMLElement) => {\r\n        node.style.visibility = this.ngSkeleton ? 'hidden' : 'visible';\r\n      });\r\n    }\r\n  }\r\n\r\n  updateInputs(): void {\r\n    if (this.componentRef) {\r\n      this.componentRef.setInput('loading', this.ngSkeleton);\r\n      this.componentRef.setInput('loaderComponent', this.ngSkeletonComponent);\r\n      this.componentRef.setInput('data', this.ngSkeletonData);\r\n    }\r\n  }\r\n}\r\n\r\nexport const GLOBAL_SKELETON_LOADER_COMPONENT = new InjectionToken<\r\n  Type<unknown>\r\n>('SKELETON_LOADER_COMPONENT');\r\n",
             "selector": "[ngSkeleton]",
             "providers": [],
             "inputsClass": [
@@ -49,7 +49,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nIf `true` this shows skeleton loader in place of dom element.\nIt will take the height and width of the dom element\n",
                     "description": "<p>If <code>true</code> this shows skeleton loader in place of dom element.\nIt will take the height and width of the dom element</p>\n",
-                    "line": 27,
+                    "line": 30,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -60,7 +60,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nThis can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered\n",
                     "description": "<p>This can be used to show a custom component as a loader, by default the inbuilt <code>NgSkeletonDefaultLoaderComponent</code> component is rendered</p>\n",
-                    "line": 32,
+                    "line": 35,
                     "type": "Type<>",
                     "decorators": []
                 },
@@ -70,7 +70,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nThis can be used to pass any object data to the skeleton component\n`ShinyLoaderData` - default type\n",
                     "description": "<p>This can be used to pass any object data to the skeleton component\n<code>ShinyLoaderData</code> - default type</p>\n",
-                    "line": 38,
+                    "line": 41,
                     "type": "ShinyLoaderData | ",
                     "decorators": []
                 },
@@ -81,7 +81,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nIf `true` the dom element will be hidden with visibility: hidden\n",
                     "description": "<p>If <code>true</code> the dom element will be hidden with visibility: hidden</p>\n",
-                    "line": 43,
+                    "line": 46,
                     "type": "boolean",
                     "decorators": []
                 }
@@ -99,7 +99,7 @@
                     "type": "ComponentRef<NgSkeletonComponent>",
                     "optional": false,
                     "description": "",
-                    "line": 51
+                    "line": 61
                 },
                 {
                     "name": "ngContentNodes",
@@ -108,7 +108,7 @@
                     "type": "any[]",
                     "optional": true,
                     "description": "",
-                    "line": 50
+                    "line": 60
                 }
             ],
             "methodsClass": [
@@ -118,7 +118,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 69,
+                    "line": 79,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -128,7 +128,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 52,
+                    "line": 62,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -145,7 +145,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 62,
+                    "line": 72,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -166,7 +166,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 77,
+                    "line": 87,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -192,9 +192,15 @@
                         "type": "ViewContainerRef",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "globalLoaderComponent",
+                        "type": "Type<>",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 43,
+                "line": 46,
                 "jsdoctags": [
                     {
                         "name": "tpl",
@@ -208,6 +214,15 @@
                     {
                         "name": "vcr",
                         "type": "ViewContainerRef",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "globalLoaderComponent",
+                        "type": "Type<>",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -340,6 +355,72 @@
     ],
     "components": [
         {
+            "name": "CustomLoaderComponent",
+            "id": "component-CustomLoaderComponent-581e4512be2459b28f0f34ea38106195f3f84551676b03de145e9c6f6d0848542a6324529560f38a108ea257d73f1de07cb53513d788973dea91dbd28e174356",
+            "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "custom-percent-loader",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<img\n  *ngSkeleton=\"\n    true;\n    data: { percent };\n    hideOnLoading: false;\n    component: component\n  \"\n  style=\"width: 400px; height: 200px; border-radius: 20px;\"\n  src=\"art.jpg\"\n/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "component",
+                    "defaultValue": "NgSkeletonPercentLoaderComponent",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 24
+                },
+                {
+                    "name": "percent",
+                    "defaultValue": "0",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": false,
+                    "description": "",
+                    "line": 23
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 26,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Story, Meta } from '@storybook/angular/types-6-0';\r\nimport { NgSkeletonModule } from '../ng-skeleton.module';\r\nimport { moduleMetadata } from '@storybook/angular';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { NgSkeletonPercentLoaderComponent } from './custom-skeleton-loader.component';\r\n\r\n@Component({\r\n  selector: 'custom-percent-loader',\r\n  template: `\r\n    <img\r\n      *ngSkeleton=\"\r\n        true;\r\n        data: { percent };\r\n        hideOnLoading: false;\r\n        component: component\r\n      \"\r\n      style=\"width: 400px; height: 200px; border-radius: 20px;\"\r\n      src=\"art.jpg\"\r\n    />\r\n  `,\r\n})\r\nclass CustomLoaderComponent implements OnInit {\r\n  percent: number = 0;\r\n  component = NgSkeletonPercentLoaderComponent;\r\n\r\n  ngOnInit(): void {\r\n    setInterval(() => {\r\n      if (this.percent >= 100) {\r\n        this.percent = 0;\r\n      } else {\r\n        if (Math.random() > 0.5) {\r\n          this.percent += 5;\r\n        } else {\r\n          this.percent += 15;\r\n        }\r\n\r\n        if (this.percent > 100) {\r\n          this.percent = 100;\r\n        }\r\n      }\r\n    }, 1000);\r\n  }\r\n}\r\n\r\nconst CustomLoaderTemplate: Story<CustomLoaderComponent> = (\r\n  args: CustomLoaderComponent\r\n) => ({\r\n  component: CustomLoaderComponent,\r\n  props: args,\r\n});\r\n\r\nexport const CustomLoader = CustomLoaderTemplate.bind({});\r\n\r\nCustomLoader.args = {};\r\n\r\nexport default {\r\n  title: 'Directives/NgSkeleton',\r\n  decorators: [\r\n    moduleMetadata({\r\n      declarations: [CustomLoaderComponent],\r\n      imports: [NgSkeletonModule],\r\n    }),\r\n  ],\r\n  argTypes: {\r\n    ngSkeleton: {\r\n      description:\r\n        'If `true` this shows skeleton loader in place of dom element. It will take the height and width of the dom element',\r\n      control: 'boolean',\r\n      defaultValue: { summary: false },\r\n    },\r\n    data: {\r\n      description:\r\n        'This can be used to pass any object data to the skeleton component. <br/>You can use your own Skeleton component with `component` prop',\r\n      control: 'object',\r\n      defaultValue: { summary: 'ShinyLoaderData' },\r\n    },\r\n    hideOnLoading: {\r\n      description:\r\n        'If `true` the dom element will be hidden with visibility: hidden',\r\n      control: 'boolean',\r\n    },\r\n    component: {\r\n      description:\r\n        'This can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered',\r\n      defaultValue: { summary: 'NgSkeletonShinyLoaderComponent' },\r\n    },\r\n  },\r\n} as Meta;\r\n\r\ntype DirectiveType = {\r\n  ngSkeleton: boolean;\r\n  data: unknown;\r\n  hideOnLoading: boolean;\r\n  component: ThisType<unknown>;\r\n};\r\n\r\nexport const BasicFullSize: Story<DirectiveType> = (args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n  <h1 style=\"min-width: 120px; min-height: 40px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\r\n    Heading\r\n  </h1>\r\n\r\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\r\n    First paragraph with some content\r\n  </p>\r\n\r\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\r\n    Second paragraph with some content\r\n  </p>\r\n  `,\r\n});\r\n\r\nBasicFullSize.args = {\r\n  ngSkeleton: true,\r\n  data: {\r\n    shape: 'fullSize',\r\n  },\r\n  hideOnLoading: true,\r\n};\r\n\r\nexport const Circle: Story<DirectiveType> = (args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n  <img\r\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\r\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\r\n    src=\"avatar.svg\"\r\n  />\r\n  <!-- Usage: \r\n  <img\r\n    (load)=\"ngSkeleton = false\"\r\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\r\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\r\n    src=\"avatar.svg\"\r\n  />\r\n  -->\r\n  `,\r\n});\r\n\r\nCircle.args = {\r\n  ngSkeleton: true,\r\n  data: {\r\n    shape: 'circle',\r\n    size: '100px',\r\n  },\r\n  hideOnLoading: true,\r\n};\r\n\r\nexport const Square: Story<DirectiveType> = (args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\r\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\r\n  `,\r\n});\r\n\r\nSquare.args = {\r\n  ngSkeleton: true,\r\n  data: {\r\n    shape: 'square',\r\n    size: '200px',\r\n    borderRadius: '20px',\r\n  },\r\n  hideOnLoading: true,\r\n};\r\n\r\nexport const CustomColor: Story<DirectiveType> = (args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\r\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\r\n  `,\r\n});\r\n\r\nCustomColor.args = {\r\n  ngSkeleton: true,\r\n  data: {\r\n    shape: 'square',\r\n    size: '200px',\r\n    borderRadius: '20px',\r\n    loaderColor1: '#343434',\r\n    loaderColor2: '#404040',\r\n  },\r\n  hideOnLoading: true,\r\n};\r\n\r\nexport const Rectangle: Story<DirectiveType> = (args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n  <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\r\n  <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 50%;\" src=\"art.jpg\"/>-->\r\n\r\n  `,\r\n});\r\n\r\nRectangle.args = {\r\n  ngSkeleton: true,\r\n  data: {\r\n    shape: 'rectangle',\r\n    width: '400px',\r\n    height: '200px',\r\n    borderRadius: '20px',\r\n  },\r\n  hideOnLoading: true,\r\n};\r\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "implements": [
+                "OnInit"
+            ]
+        },
+        {
             "name": "NgSkeletonComponent",
             "id": "component-NgSkeletonComponent-ef4feac0ef248f51fe6256782ef79b835c817dc396da5a4aa532ad526599abf3bc9129f9bf0a1270c5707385fcf9e0149faf040779a68e50d731f5290df170fc",
             "file": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.component.ts",
@@ -463,6 +544,134 @@
                     }
                 ]
             }
+        },
+        {
+            "name": "NgSkeletonPercentLoaderComponent",
+            "id": "component-NgSkeletonPercentLoaderComponent-5f6d5b71ea4fb8ce07b23b2289eaa9c41ac5aa9a5fd687171d4566b93f977cf3e0cf02a15d916e68b17d946cdeed70b3302f52d59fa8129c9c8524e7baf1568a",
+            "file": "projects/ng-util-directive/src/lib/skeleton/stories/custom-skeleton-loader.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "percent-loader",
+            "styleUrls": [],
+            "styles": [
+                "\n      :host {\n        display: block;\n        height: 100%;\n        width: 100%;\n      }\n\n      .percent-skeleton {\n        height: calc(100% - 4px);\n        border-radius: 20px;\n        background-color: #00ffa194;\n        transition: 0.5s cubic-bezier(0.35, 0, 0.5, 1);\n      }\n    "
+            ],
+            "template": "<div class=\"percent-skeleton\" [ngStyle]=\"loaderStyle\"></div>",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "loaderStyle",
+                    "defaultValue": "{\r\n    width: '0%',\r\n  }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Record<string | string>",
+                    "optional": false,
+                    "description": "",
+                    "line": 28
+                },
+                {
+                    "name": "serviceSubscription",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Subscription",
+                    "optional": true,
+                    "description": "",
+                    "line": 16,
+                    "inheritance": {
+                        "file": "NgSkeletonLoader"
+                    }
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "handleDataChange",
+                    "args": [
+                        {
+                            "name": "data",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 32,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "data",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "NgSkeletonLoader"
+                    }
+                },
+                {
+                    "name": "ngOnDestroy",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 25,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "inheritance": {
+                        "file": "NgSkeletonLoader"
+                    }
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "inheritance": {
+                        "file": "NgSkeletonLoader"
+                    }
+                },
+                {
+                    "name": "subscribeToDataChange",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "inheritance": {
+                        "file": "NgSkeletonLoader"
+                    }
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { NgStyle } from '@angular/common';\r\nimport { Component } from '@angular/core';\r\nimport { NgSkeletonLoader } from '../ng-skeleton.interface';\r\n\r\n@Component({\r\n  selector: 'percent-loader',\r\n  standalone: true,\r\n  imports: [NgStyle],\r\n  template: ` <div class=\"percent-skeleton\" [ngStyle]=\"loaderStyle\"></div> `,\r\n  styles: [\r\n    `\r\n      :host {\r\n        display: block;\r\n        height: 100%;\r\n        width: 100%;\r\n      }\r\n\r\n      .percent-skeleton {\r\n        height: calc(100% - 4px);\r\n        border-radius: 20px;\r\n        background-color: #00ffa194;\r\n        transition: 0.5s cubic-bezier(0.35, 0, 0.5, 1);\r\n      }\r\n    `,\r\n  ],\r\n})\r\nexport class NgSkeletonPercentLoaderComponent extends NgSkeletonLoader {\r\n  loaderStyle: Record<string, string> = {\r\n    width: '0%',\r\n  };\r\n\r\n  handleDataChange(data: { percent: number }): void {\r\n    const percent = data?.percent;\r\n\r\n    this.loaderStyle = {\r\n      width: `${percent}%`,\r\n    };\r\n  }\r\n}\r\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n      :host {\n        display: block;\n        height: 100%;\n        width: 100%;\n      }\n\n      .percent-skeleton {\n        height: calc(100% - 4px);\n        border-radius: 20px;\n        background-color: #00ffa194;\n        transition: 0.5s cubic-bezier(0.35, 0, 0.5, 1);\n      }\n    \n",
+            "extends": "NgSkeletonLoader"
         },
         {
             "name": "NgSkeletonShinyLoaderComponent",
@@ -713,51 +922,81 @@
                 "name": "BasicFullSize",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<DirectiveType>",
-                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <h1 style=\"min-width: 120px; min-height: 40px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    Heading\n  </h1>\n\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    First paragraph with some content\n  </p>\n\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    Second paragraph with some content\n  </p>\n  `,\n})"
+                "defaultValue": "(args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n  <h1 style=\"min-width: 120px; min-height: 40px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\r\n    Heading\r\n  </h1>\r\n\r\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\r\n    First paragraph with some content\r\n  </p>\r\n\r\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\r\n    Second paragraph with some content\r\n  </p>\r\n  `,\r\n})"
             },
             {
                 "name": "Circle",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<DirectiveType>",
-                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <img\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\n    src=\"avatar.svg\"\n  />\n  <!-- Usage: \n  <img\n    (load)=\"ngSkeleton = false\"\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\n    src=\"avatar.svg\"\n  />\n  -->\n  `,\n})"
+                "defaultValue": "(args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n  <img\r\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\r\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\r\n    src=\"avatar.svg\"\r\n  />\r\n  <!-- Usage: \r\n  <img\r\n    (load)=\"ngSkeleton = false\"\r\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\r\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\r\n    src=\"avatar.svg\"\r\n  />\r\n  -->\r\n  `,\r\n})"
             },
             {
                 "name": "CustomColor",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<DirectiveType>",
-                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\n  `,\n})"
+                "defaultValue": "(args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\r\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\r\n  `,\r\n})"
+            },
+            {
+                "name": "CustomLoader",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "CustomLoaderTemplate.bind({})"
+            },
+            {
+                "name": "CustomLoaderTemplate",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<CustomLoaderComponent>",
+                "defaultValue": "(\r\n  args: CustomLoaderComponent\r\n) => ({\r\n  component: CustomLoaderComponent,\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "GLOBAL_SKELETON_LOADER_COMPONENT",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.directive.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new InjectionToken<\r\n  Type<unknown>\r\n>('SKELETON_LOADER_COMPONENT')"
             },
             {
                 "name": "Rectangle",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<DirectiveType>",
-                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n  <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 50%;\" src=\"art.jpg\"/>-->\n\n  `,\n})"
+                "defaultValue": "(args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n  <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\r\n  <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 50%;\" src=\"art.jpg\"/>-->\r\n\r\n  `,\r\n})"
             },
             {
                 "name": "Square",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<DirectiveType>",
-                "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\n  `,\n})"
+                "defaultValue": "(args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\r\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\r\n  `,\r\n})"
             }
         ],
         "functions": [],
@@ -778,7 +1017,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "rawtype": "literal type",
-                "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -831,56 +1070,88 @@
         ],
         "enumerations": [],
         "groupedVariables": {
-            "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts": [
+            "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts": [
                 {
                     "name": "BasicFullSize",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<DirectiveType>",
-                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <h1 style=\"min-width: 120px; min-height: 40px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    Heading\n  </h1>\n\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    First paragraph with some content\n  </p>\n\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\n    Second paragraph with some content\n  </p>\n  `,\n})"
+                    "defaultValue": "(args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n  <h1 style=\"min-width: 120px; min-height: 40px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\r\n    Heading\r\n  </h1>\r\n\r\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\r\n    First paragraph with some content\r\n  </p>\r\n\r\n  <p style=\"min-width: 250px; min-height: 20px\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\">\r\n    Second paragraph with some content\r\n  </p>\r\n  `,\r\n})"
                 },
                 {
                     "name": "Circle",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<DirectiveType>",
-                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <img\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\n    src=\"avatar.svg\"\n  />\n  <!-- Usage: \n  <img\n    (load)=\"ngSkeleton = false\"\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\n    src=\"avatar.svg\"\n  />\n  -->\n  `,\n})"
+                    "defaultValue": "(args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n  <img\r\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\r\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\r\n    src=\"avatar.svg\"\r\n  />\r\n  <!-- Usage: \r\n  <img\r\n    (load)=\"ngSkeleton = false\"\r\n    *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\"\r\n    style=\"width: 100px; height: 100px; border-radius: 50%;\"\r\n    src=\"avatar.svg\"\r\n  />\r\n  -->\r\n  `,\r\n})"
                 },
                 {
                     "name": "CustomColor",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<DirectiveType>",
-                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\n  `,\n})"
+                    "defaultValue": "(args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\r\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\r\n  `,\r\n})"
+                },
+                {
+                    "name": "CustomLoader",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "CustomLoaderTemplate.bind({})"
+                },
+                {
+                    "name": "CustomLoaderTemplate",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<CustomLoaderComponent>",
+                    "defaultValue": "(\r\n  args: CustomLoaderComponent\r\n) => ({\r\n  component: CustomLoaderComponent,\r\n  props: args,\r\n})"
                 },
                 {
                     "name": "Rectangle",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<DirectiveType>",
-                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n  <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n  <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 50%;\" src=\"art.jpg\"/>-->\n\n  `,\n})"
+                    "defaultValue": "(args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n  <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\r\n  <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 400px; height: 200px; border-radius: 50%;\" src=\"art.jpg\"/>-->\r\n\r\n  `,\r\n})"
                 },
                 {
                     "name": "Square",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<DirectiveType>",
-                    "defaultValue": "(args: DirectiveType) => ({\n  props: args,\n  template: `\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\n  `,\n})"
+                    "defaultValue": "(args: DirectiveType) => ({\r\n  props: args,\r\n  template: `\r\n    <img  *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 200px; height: 200px; border-radius: 20px;\" src=\"art.jpg\"/>\r\n    <!-- Usage: <img (load)=\"ngSkeleton = false\" *ngSkeleton=\"ngSkeleton; data: data; hideOnLoading: hideOnLoading\" style=\"width: 100%; height: 100%; border-radius: 50%;\" src=\"art.jpg\"/>-->\r\n  `,\r\n})"
+                }
+            ],
+            "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.directive.ts": [
+                {
+                    "name": "GLOBAL_SKELETON_LOADER_COMPONENT",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.directive.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new InjectionToken<\r\n  Type<unknown>\r\n>('SKELETON_LOADER_COMPONENT')"
                 }
             ]
         },
@@ -944,13 +1215,13 @@
                     "kind": 181
                 }
             ],
-            "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts": [
+            "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts": [
                 {
                     "name": "DirectiveType",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
                     "rawtype": "literal type",
-                    "file": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
+                    "file": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -961,59 +1232,9 @@
     },
     "routes": [],
     "coverage": {
-        "count": 8,
+        "count": 5,
         "status": "low",
         "files": [
-            {
-                "filePath": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "BasicFullSize",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Circle",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "CustomColor",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Rectangle",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/ng-util-directive/src/lib/skeleton/Skeleton.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Square",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
             {
                 "filePath": "projects/ng-util-directive/src/lib/skeleton/loaders/shiny-loader.component.ts",
                 "type": "component",
@@ -1042,6 +1263,16 @@
                 "status": "medium"
             },
             {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.directive.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "GLOBAL_SKELETON_LOADER_COMPONENT",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/ng-util-directive/src/lib/skeleton/ng-skeleton.interface.ts",
                 "type": "directive",
                 "linktype": "directive",
@@ -1057,6 +1288,94 @@
                 "name": "SkeletonService",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CustomLoaderComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "BasicFullSize",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Circle",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "CustomColor",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "CustomLoader",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "CustomLoaderTemplate",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Rectangle",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/stories/Skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Square",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/ng-util-directive/src/lib/skeleton/stories/custom-skeleton-loader.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "NgSkeletonPercentLoaderComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
                 "status": "low"
             }
         ]
