@@ -1,24 +1,21 @@
 # NgUtilDirective
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0.
+# ng-util-directive
 
-## Code scaffolding
+### Installation
 
-Run `ng generate component component-name --project ng-util-directive` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ng-util-directive`.
-> Note: Don't forget to add `--project ng-util-directive` or else it will be added to the default project in your `angular.json` file. 
+`npm i ng-util-directive`
 
-## Build
+This assumes that you are using angular project to consume this library.
 
-Run `ng build ng-util-directive` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Import NgSkeletonModule module
 
-## Publishing
+`import { NgSkeletonModule } from 'ng-util-directive'`
 
-After building your library with `ng build ng-util-directive`, go to the dist folder `cd dist/ng-util-directive` and run `npm publish`.
+### Usage
 
-## Running unit tests
+`<img (load)="loading = false" *ngSkeleton="loading; data: {shape: 'circle', size: '100px' }; hideOnLoading: true" style="width: 100px; height: 100px; border-radius: 50%;" src="avatar.svg" /> `
 
-Run `ng test ng-util-directive` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# Storybook Demo
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+[Storybook Demo Link](https://ng-util-directive.vercel.app/ "Storybook Link")
