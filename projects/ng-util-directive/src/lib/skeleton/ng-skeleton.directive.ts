@@ -19,6 +19,10 @@ import {
   ShinyLoaderData,
 } from './loaders/shiny-loader.component';
 
+export const GLOBAL_SKELETON_LOADER_COMPONENT = new InjectionToken<
+  Type<unknown>
+>('SKELETON_LOADER_COMPONENT');
+
 @Directive({
   selector: '[ngSkeleton]',
 })
@@ -92,7 +96,3 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges {
     }
   }
 }
-
-export const GLOBAL_SKELETON_LOADER_COMPONENT = new InjectionToken<
-  Type<unknown>
->('SKELETON_LOADER_COMPONENT');
