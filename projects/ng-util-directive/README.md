@@ -24,3 +24,7 @@ This assumes that you are using angular project to consume this library.
 # Storybook Demo
 
 [Storybook Demo Link](https://ng-util-directive.vercel.app/ "Storybook Link")
+
+# Stackblitz Demo
+
+[Stackblitz Demo Link](https://stackblitz.com/edit/angular-fzwtn5?file=src/main.ts "Stackblitz Link")
