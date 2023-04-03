@@ -12,4 +12,24 @@ export const parameters = {
     },
   },
   docs: { inlineStories: true },
+  options: {
+    storySort: {
+      order: [
+        "Directives",
+        [
+          "NgSkeleton",
+          [
+            "Basic Full Size",
+            "Circle",
+            "Rectangle",
+            "Square",
+            "Custom Color",
+            "Guide: Usage guide",
+            "Guide: Custom skeleton component creation",
+          ],
+        ],
+      ],
+      locales: "en-US",
+    },
+  },
 };
