@@ -2,6 +2,8 @@ import {
   AfterViewInit,
   ComponentRef,
   Directive,
+  DoCheck,
+  EmbeddedViewRef,
   Inject,
   InjectionToken,
   Input,
@@ -26,7 +28,7 @@ export const GLOBAL_SKELETON_LOADER_COMPONENT = new InjectionToken<
 @Directive({
   selector: '[ngSkeleton]',
 })
-export class NgSkeletonDirective implements AfterViewInit, OnChanges {
+export class NgSkeletonDirective implements AfterViewInit, OnChanges, DoCheck {
   /**
    * If `true` this shows skeleton loader in place of dom element.
    * It will take the height and width of the dom element
@@ -63,8 +65,10 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges {
 
   ngContentNodes?: any[];
   componentRef!: ComponentRef<NgSkeletonComponent>;
+  templateEmbeddedView?: EmbeddedViewRef<any>;
   ngAfterViewInit(): void {
-    this.ngContentNodes = this.tpl.createEmbeddedView({}).rootNodes;
+    this.templateEmbeddedView = this.tpl.createEmbeddedView({});
+    this.ngContentNodes = this.templateEmbeddedView.rootNodes;
     this.componentRef = this.vcr.createComponent(NgSkeletonComponent, {
       projectableNodes: [this.ngContentNodes],
     });
@@ -78,6 +82,10 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges {
     if (changes['ngSkeleton']) {
       this.handleNodeVisibility();
     }
+  }
+
+  ngDoCheck(): void {
+    this.templateEmbeddedView?.detectChanges?.();
   }
 
   handleNodeVisibility(): void {
