@@ -1,5 +1,3 @@
-# NgUtilDirective
-
 # ng-util-directive
 
 ### Installation
@@ -12,7 +10,7 @@ This assumes that you are using angular project to consume this library.
 
 `import { NgSkeletonModule } from 'ng-util-directive'`
 
-### NgSkeletonDirective Usage
+### ng-util-directive Usage
 
 ```
 <img
