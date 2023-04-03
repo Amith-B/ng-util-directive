@@ -12,9 +12,16 @@ This assumes that you are using angular project to consume this library.
 
 `import { NgSkeletonModule } from 'ng-util-directive'`
 
-### Usage
+### NgSkeletonDirective Usage
 
-`<img (load)="loading = false" *ngSkeleton="loading; data: {shape: 'circle', size: '100px' }; hideOnLoading: true" style="width: 100px; height: 100px; border-radius: 50%;" src="avatar.svg" /> `
+```
+<img
+  (load)="loading = false"
+  *ngSkeleton="loading; data: {shape: 'circle', size: '100px' }; hideOnLoading: true"
+  style="width: 100px; height: 100px; border-radius: 50%;"
+  src="avatar.svg"
+/>
+```
 
 # Storybook Demo
 

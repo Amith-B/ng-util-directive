@@ -1,6 +1,18 @@
 {
   "name": "ng-util-directive",
   "version": "1.0.0",
+  "author": {
+    "name": "Amith-B",
+    "url": "https://amith-b.github.io/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Amith-B/ng-util-directive.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Amith-B/ng-util-directive/issues"
+  },
+  "homepage": "https://github.com/Amith-B/ng-util-directive#readme",
   "peerDependencies": {
     "@angular/common": "^15.2.0",
     "@angular/core": "^15.2.0"
