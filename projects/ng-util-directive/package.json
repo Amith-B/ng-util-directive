@@ -1,6 +1,6 @@
 {
   "name": "ng-util-directive",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "license": "Apache-2.0",
   "author": {
     "name": "Amith-B",
@@ -14,7 +14,7 @@
     "url": "https://github.com/Amith-B/ng-util-directive/issues"
   },
   "description": "A angular library which includes some useful directives like skeleton directive",
-  "keywords": ["angular", "diretives", "skeleton", "customisation"],
+  "keywords": ["angular", "directives", "skeleton", "customisation"],
   "homepage": "https://github.com/Amith-B/ng-util-directive#readme",
   "peerDependencies": {
     "@angular/common": "^15.2.0",

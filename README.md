@@ -6,20 +6,12 @@
 
 This assumes that you are using angular project to consume this library.
 
-### Import NgSkeletonModule module
+### Available Directives
 
-`import { NgSkeletonModule } from 'ng-util-directive'`
-
-### ng-util-directive Usage
-
-```
-<img
-  (load)="loading = false"
-  *ngSkeleton="loading; data: {shape: 'circle', size: '100px' }; hideOnLoading: true"
-  style="width: 100px; height: 100px; border-radius: 50%;"
-  src="avatar.svg"
-/>
-```
+| Import                                                        | Description                                                                                      | Usage                                                                                                                                                                                           |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `import { NgSkeletonModule } from 'ng-util-directive'`        | `A skeleton directive which shows as an overlay on top of the dom element`                       | `<img (load)="loading = false" *ngSkeleton="loading; data: {shape: 'circle', size: '100px' }; hideOnLoading: true" style="width: 100px; height: 100px; border-radius: 50%;" src="avatar.svg"/>` |
+| `import { NgContainerResizeModule } from 'ng-util-directive'` | `A directive which emits the resize event for a container. Which internally uses ResizeObserver` | `<div (ngContainerResize)="handleContainerResize($event)">Some Content </div>`                                                                                                                  |
 
 # Storybook Demo
 

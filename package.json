@@ -1,6 +1,6 @@
 {
   "name": "ng-util-directive",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "private": true,
   "description": "A angular library which includes some useful directives like skeleton directive",
-  "keywords": ["angular", "diretives", "skeleton", "customisation"],
+  "keywords": ["angular", "directives", "skeleton", "customisation"],
   "dependencies": {
     "@angular/animations": "^15.2.0",
     "@angular/common": "^15.2.0",
