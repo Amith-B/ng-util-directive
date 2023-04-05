@@ -1,6 +1,6 @@
 {
   "name": "ng-util-directive",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,7 +11,10 @@
     "storybook": "start-storybook -s ./.storybook/assets/ -p 6006 --no-manager-cache",
     "build-storybook": "build-storybook -s ./.storybook/assets/"
   },
+  "license": "Apache-2.0",
   "private": true,
+  "description": "A angular library which includes some useful directives like skeleton directive",
+  "keywords": ["angular", "diretives", "skeleton", "customisation"],
   "dependencies": {
     "@angular/animations": "^15.2.0",
     "@angular/common": "^15.2.0",
