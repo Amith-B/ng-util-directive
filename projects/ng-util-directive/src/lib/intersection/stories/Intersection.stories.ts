@@ -15,36 +15,64 @@ export default {
       description:
         'An output event which emits `IntersectionObserverEntry` for the the dom element on which this directive is used.<br/>This directive uses `IntersectionObserver` internally and disconnects the observer when view is destroyed',
       action: 'ngContainerIntersection',
-    }
+    },
+    console: {
+      table: { disable: true },
+    },
   },
 } as Meta;
 
 export const Basic: Story = (args: any) => ({
-  props: args,
+  props: {
+    ...args,
+    handleIntersection: (
+      event: IntersectionObserverEntry,
+      target: HTMLElement
+    ) => {
+      console.log(event);
+      if (event.isIntersecting) {
+        target.style.background = 'lightgreen';
+        target.innerHTML = 'Visible';
+      } else {
+        target.style.background = '#ff8787';
+        target.innerHTML = 'Hidden';
+      }
+    },
+  },
   template: `
+  <p> Scroll below container to see the img which has directive in it </p>
   <div 
-    style="
-      max-height: 400px;
-      overflow: auto;
-      border: 1px solid black;
-      position: relative;
+    style="max-height: 400px; overflow: auto; border: 1px solid black; position: relative;
     "
   >
-    <div style="height: 2000px">
-      <p #info style="position: absolute; top: 0; left: 0;"></p>
-      <div
-        (ngContainerIntersection)=""
-        style="
-          margin-top: 800px;
-          width: max-content;
-          height: 40px;
-          background-color: #ffaaaa82;
-        "
-      >Some Content</div>
+    <p #info style="position: sticky; top: 0; margin: 0; margin-left: 150px; padding: 0.5rem;"></p>
+    <div style="height: 2000px; padding-top: 800px;">
+      <img
+        (ngContainerIntersection)="handleIntersection($event, info)"
+        style="width: 200px; height: 100px; border-radius: 20px;"
+        src="art.jpg"
+      />
     </div>
   </div>
+
+  <!--
+  handleIntersection: (
+    event: IntersectionObserverEntry,
+    target: HTMLElement
+  ) => {
+    console.log(event);
+    if (event.isIntersecting) {
+      target.style.background = 'lightgreen';
+      target.innerHTML = 'Visible';
+    } else {
+      target.style.background = '#ff8787';
+      target.innerHTML = 'Hidden';
+    }
+  }
+  -->
   `,
 });
 
 Basic.args = {
+  console: console,
 };
