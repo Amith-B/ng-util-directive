@@ -16,7 +16,13 @@ This assumes that you are using angular project to consume this library.
 # Storybook Demo
 
 [Storybook Demo Link](https://ng-util-directive.vercel.app/ "Storybook Link")
+<p>
+ <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://ng-util-directive.vercel.vercel.app/" alt="Storybook website link"/> 
+</p>
 
 # Stackblitz Demo
 
 [Stackblitz Demo Link](https://stackblitz.com/edit/angular-fzwtn5?file=src/main.ts "Stackblitz Link")
+<p>
+ <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://stackblitz.com/edit/angular-fzwtn5?file=src/main.ts" alt=“Stackblitz website link"/> 
+</p>
