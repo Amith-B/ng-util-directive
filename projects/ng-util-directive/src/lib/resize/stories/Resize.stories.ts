@@ -23,7 +23,18 @@ export default {
 } as Meta;
 
 export const Basic: Story = (args: any) => ({
-  props: args,
+  props: {
+    ...args,
+    handleContainerResize: (event: ResizeObserverEntry) => {
+      console.log(event);
+      event.target.innerHTML = JSON.stringify(event.contentRect, null, '\t')
+        .replace(/\n/g, '<br/>')
+        .replace(
+          /\t/g,
+          '<div style="display: inline-block; width: 20px;"></div>'
+        );
+    },
+  },
   template: `
   <div 
     style="
@@ -36,14 +47,22 @@ export const Basic: Story = (args: any) => ({
     "
   >
     <div
-      (ngContainerResize)="$event.target.innerHTML = JSON.stringify($event.contentRect, null, '\t').replaceAll('\n', '<br/>')"
-      style="
-        width: 100%;
-        height: 100%;
-        background-color: #ffaaaa82;
+      (ngContainerResize)="handleContainerResize($event)"
+      style="width: 100%; height: 100%; background-color: #ffaaaa82;
       "
     ></div>
   </div>
+  <!--
+  handleContainerResize: (event: ResizeObserverEntry) => {
+    console.log(event);
+    event.target.innerHTML = JSON.stringify(event.contentRect, null, '\t')
+      .replace(/\n/g, '<br/>')
+      .replace(
+        /\t/g,
+        '<div style="display: inline-block; width: 20px;"></div>'
+      );
+  }
+  -->
   `,
 });
 
