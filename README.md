@@ -8,14 +8,16 @@ This assumes that you are using angular project to consume this library.
 
 ### Available Directives
 
-| Import                                                        | Description                                                                                      | Usage                                                                                                                                                                                           |
-| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `import { NgSkeletonModule } from 'ng-util-directive'`        | `A skeleton directive which shows as an overlay on top of the dom element`                       | `<img (load)="loading = false" *ngSkeleton="loading; data: {shape: 'circle', size: '100px' }; hideOnLoading: true" style="width: 100px; height: 100px; border-radius: 50%;" src="avatar.svg"/>` |
-| `import { NgContainerResizeModule } from 'ng-util-directive'` | `A directive which emits the resize event for a container. Which internally uses ResizeObserver` | `<div (ngContainerResize)="handleContainerResize($event)">Some Content </div>`                                                                                                                  |
+| Import                                                              | Description                                                                                                  | Usage                                                                                                                                                                                           |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `import { NgSkeletonModule } from 'ng-util-directive'`              | `A skeleton directive which shows as an overlay on top of the dom element`                                   | `<img (load)="loading = false" *ngSkeleton="loading; data: {shape: 'circle', size: '100px' }; hideOnLoading: true" style="width: 100px; height: 100px; border-radius: 50%;" src="avatar.svg"/>` |
+| `import { NgContainerResizeModule } from 'ng-util-directive'`       | `A directive which emits the resize event for a container. Which internally uses ResizeObserver`             | `<div (ngContainerResize)="handleContainerResize($event)">Some Content </div>`                                                                                                                  |
+| `import { NgContainerIntersectionModule } from 'ng-util-directive'` | `A directive which emits the intersection event for a container. Which internally uses IntersectionObserver` | `<div (ngContainerIntersection)="handleContainerIntersection($event)">Some Content </div>`                                                                                                      |
 
 # Storybook Demo
 
 [Storybook Demo Link](https://ng-util-directive.vercel.app/ "Storybook Link")
+
 <p>
  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://ng-util-directive.vercel.vercel.app/" alt="Storybook website link"/> 
 </p>
@@ -23,6 +25,7 @@ This assumes that you are using angular project to consume this library.
 # Stackblitz Demo
 
 [Stackblitz Demo Link](https://stackblitz.com/edit/angular-fzwtn5?file=src/main.ts "Stackblitz Link")
+
 <p>
  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://stackblitz.com/edit/angular-fzwtn5?file=src/main.ts" alt=“Stackblitz website link"/> 
 </p>
