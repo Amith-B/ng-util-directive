@@ -1,7 +1,7 @@
 {
   "name": "ng-util-directive",
   "version": "1.2.1",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "author": {
     "name": "Amith-B",
     "url": "https://amith-b.github.io/"
@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/Amith-B/ng-util-directive/issues"
   },
-  "description": "A angular library which includes some useful directives like skeleton directive",
+  "description": "A angular library which includes some useful directives like skeleton directive, resizeObserver directive, intersectionObserver directive etc",
   "keywords": [
     "angular",
     "directives",

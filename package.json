@@ -11,9 +11,9 @@
     "storybook": "start-storybook -s ./.storybook/assets/ -p 6006 --no-manager-cache",
     "build-storybook": "build-storybook -s ./.storybook/assets/"
   },
-  "license": "Apache-2.0",
+  "license": "MIT",
   "private": true,
-  "description": "A angular library which includes some useful directives like skeleton directive",
+  "description": "A angular library which includes some useful directives like skeleton directive, resizeObserver directive, intersectionObserver directive etc",
   "keywords": [
     "angular",
     "directives",
