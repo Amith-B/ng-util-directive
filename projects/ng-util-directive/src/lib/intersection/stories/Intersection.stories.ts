@@ -134,15 +134,18 @@ export const WithOptions: Story = (args: any) => ({
   <!--
   handleIntersection: (
     event: IntersectionObserverEntry,
-    target: HTMLElement
+    target: HTMLElement,
+    rootMargin?: boolean
   ) => {
     console.log(event);
     if (event.isIntersecting) {
       target.style.background = 'lightgreen';
-      target.innerHTML = 'Visible';
+      target.innerHTML = rootMargin ? 'Near to view' : 'Fully Visible';
     } else {
       target.style.background = '#ff8787';
-      target.innerHTML = 'Hidden';
+      target.innerHTML = rootMargin
+        ? 'Out of view'
+        : 'Hidden or Partially Visible';
     }
   }
   -->
