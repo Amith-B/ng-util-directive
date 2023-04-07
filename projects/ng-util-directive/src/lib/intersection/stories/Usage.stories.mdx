@@ -19,7 +19,7 @@ import { Meta, Story } from "@storybook/addon-docs/blocks";
 ## Handle intersection event
 
 ```html
-<div (ngContainerIntersection)="handleContainerIntersection($event)">
+<div (ngContainerIntersection)="handleContainerIntersection($event)" [ngContainerIntersectionOptions]="{rootMargin: '200px', threshold: 1, root: rootEleRef}">
   Some Content 
 </div>
 ```
