@@ -3,7 +3,15 @@
 // setCompodocJson(docJson);
 import "!style-loader!css-loader!sass-loader!./preview.scss";
 
+const prodStorybook = process.env.NODE_ENV === "prod";
+
 export const parameters = {
+  viewMode: prodStorybook ? "docs" : "story",
+  previewTabs: {
+    canvas: {
+      hidden: prodStorybook,
+    },
+  },
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
     expanded: true,
