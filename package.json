@@ -1,6 +1,6 @@
 {
   "name": "ng-util-directive",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,11 +9,11 @@
     "test": "ng test",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
     "storybook": "start-storybook -s ./.storybook/assets/ -p 6006 --no-manager-cache",
-    "build-storybook": "build-storybook -s ./.storybook/assets/"
+    "build-storybook": "cross-env NODE_ENV=prod build-storybook -s ./.storybook/assets/"
   },
-  "license": "Apache-2.0",
+  "license": "MIT",
   "private": true,
-  "description": "A angular library which includes some useful directives like skeleton directive",
+  "description": "A angular library which includes some useful directives like skeleton directive, resizeObserver directive, intersectionObserver directive etc",
   "keywords": [
     "angular",
     "directives",
@@ -51,6 +51,7 @@
     "@storybook/testing-library": "^0.0.13",
     "@types/jasmine": "~4.3.0",
     "babel-loader": "^8.3.0",
+    "cross-env": "^7.0.3",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
