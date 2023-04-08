@@ -1,0 +1,23 @@
+import { Meta, Story } from "@storybook/addon-docs/blocks";
+
+<Meta
+  title="Directives/NgDraggable/Guide: Usage guide"
+  parameters={{
+    viewMode: "docs",
+    previewTabs: {
+      canvas: { hidden: true },
+    },
+  }}
+/>
+
+# NgDraggable Usage
+
+`import { NgDraggableModule } from 'ng-util-directive';`
+
+<br />
+
+## Handle resize event
+
+```html
+<div draggable [draggableSticky]="true">Some Content</div>
+```
