@@ -8,7 +8,7 @@ import { NgSkeletonPercentLoaderComponent } from './custom-skeleton-loader.compo
   selector: 'custom-percent-loader',
   template: `
     <img
-      *ngSkeleton="
+      *skeletonLoader="
         true;
         data: { percent };
         hideOnLoading: false;
@@ -62,7 +62,7 @@ export default {
     }),
   ],
   argTypes: {
-    ngSkeleton: {
+    skeletonLoader: {
       description:
         'If `true` this shows skeleton loader in place of dom element. It will take the height and width of the dom element',
       control: 'boolean',
@@ -88,7 +88,7 @@ export default {
 } as Meta;
 
 type DirectiveType = {
-  ngSkeleton: boolean;
+  skeletonLoader: boolean;
   data: unknown;
   hideOnLoading: boolean;
   component: ThisType<unknown>;
@@ -97,22 +97,22 @@ type DirectiveType = {
 export const BasicFullSize: Story<DirectiveType> = (args: DirectiveType) => ({
   props: args,
   template: `
-  <h1 style="min-width: 120px; min-height: 40px" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading">
+  <h1 style="min-width: 120px; min-height: 40px" *skeletonLoader="skeletonLoader; data: data; hideOnLoading: hideOnLoading">
     Heading
   </h1>
 
-  <p style="min-width: 250px; min-height: 20px" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading">
+  <p style="min-width: 250px; min-height: 20px" *skeletonLoader="skeletonLoader; data: data; hideOnLoading: hideOnLoading">
     First paragraph with some content
   </p>
 
-  <p style="min-width: 250px; min-height: 20px" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading">
+  <p style="min-width: 250px; min-height: 20px" *skeletonLoader="skeletonLoader; data: data; hideOnLoading: hideOnLoading">
     Second paragraph with some content
   </p>
   `,
 });
 
 BasicFullSize.args = {
-  ngSkeleton: true,
+  skeletonLoader: true,
   data: {
     shape: 'fullSize',
   },
@@ -123,14 +123,14 @@ export const Circle: Story<DirectiveType> = (args: DirectiveType) => ({
   props: args,
   template: `
   <img
-    *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading"
+    *skeletonLoader="skeletonLoader; data: data; hideOnLoading: hideOnLoading"
     style="width: 100px; height: 100px; border-radius: 50%;"
     src="avatar.svg"
   />
   <!-- Usage: 
   <img
-    (load)="ngSkeleton = false"
-    *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading"
+    (load)="skeletonLoader = false"
+    *skeletonLoader="skeletonLoader; data: data; hideOnLoading: hideOnLoading"
     style="width: 100px; height: 100px; border-radius: 50%;"
     src="avatar.svg"
   />
@@ -139,7 +139,7 @@ export const Circle: Story<DirectiveType> = (args: DirectiveType) => ({
 });
 
 Circle.args = {
-  ngSkeleton: true,
+  skeletonLoader: true,
   data: {
     shape: 'circle',
     size: '100px',
@@ -150,13 +150,13 @@ Circle.args = {
 export const Square: Story<DirectiveType> = (args: DirectiveType) => ({
   props: args,
   template: `
-    <img  *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 200px; height: 200px; border-radius: 20px;" src="art.jpg"/>
-    <!-- Usage: <img (load)="ngSkeleton = false" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 100%; height: 100%; border-radius: 50%;" src="art.jpg"/>-->
+    <img  *skeletonLoader="skeletonLoader; data: data; hideOnLoading: hideOnLoading" style="width: 200px; height: 200px; border-radius: 20px;" src="art.jpg"/>
+    <!-- Usage: <img (load)="skeletonLoader = false" *skeletonLoader="skeletonLoader; data: data; hideOnLoading: hideOnLoading" style="width: 100%; height: 100%; border-radius: 50%;" src="art.jpg"/>-->
   `,
 });
 
 Square.args = {
-  ngSkeleton: true,
+  skeletonLoader: true,
   data: {
     shape: 'square',
     size: '200px',
@@ -168,13 +168,13 @@ Square.args = {
 export const CustomColor: Story<DirectiveType> = (args: DirectiveType) => ({
   props: args,
   template: `
-    <img  *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 200px; height: 200px; border-radius: 20px;" src="art.jpg"/>
-    <!-- Usage: <img (load)="ngSkeleton = false" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 100%; height: 100%; border-radius: 50%;" src="art.jpg"/>-->
+    <img  *skeletonLoader="skeletonLoader; data: data; hideOnLoading: hideOnLoading" style="width: 200px; height: 200px; border-radius: 20px;" src="art.jpg"/>
+    <!-- Usage: <img (load)="skeletonLoader = false" *skeletonLoader="skeletonLoader; data: data; hideOnLoading: hideOnLoading" style="width: 100%; height: 100%; border-radius: 50%;" src="art.jpg"/>-->
   `,
 });
 
 CustomColor.args = {
-  ngSkeleton: true,
+  skeletonLoader: true,
   data: {
     shape: 'square',
     size: '200px',
@@ -188,14 +188,14 @@ CustomColor.args = {
 export const Rectangle: Story<DirectiveType> = (args: DirectiveType) => ({
   props: args,
   template: `
-  <img  *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 400px; height: 200px; border-radius: 20px;" src="art.jpg"/>
-  <!-- Usage: <img (load)="ngSkeleton = false" *ngSkeleton="ngSkeleton; data: data; hideOnLoading: hideOnLoading" style="width: 400px; height: 200px; border-radius: 50%;" src="art.jpg"/>-->
+  <img  *skeletonLoader="skeletonLoader; data: data; hideOnLoading: hideOnLoading" style="width: 400px; height: 200px; border-radius: 20px;" src="art.jpg"/>
+  <!-- Usage: <img (load)="skeletonLoader = false" *skeletonLoader="skeletonLoader; data: data; hideOnLoading: hideOnLoading" style="width: 400px; height: 200px; border-radius: 50%;" src="art.jpg"/>-->
 
   `,
 });
 
 Rectangle.args = {
-  ngSkeleton: true,
+  skeletonLoader: true,
   data: {
     shape: 'rectangle',
     width: '400px',
