@@ -13,7 +13,17 @@ export default {
   argTypes: {
     draggableSticky: {
       description:
-        'When `true` the draggable element will move to either right or left of the screen after mouseleave event',
+        'When `true` the draggable element will move to either right or left of the screen when pointer leaves the host',
+    },
+    draggableStickyMargins: {
+      description:
+        'You can add a margin to the sticky positions when the host sticks to left or right of screen',
+      defaultValue: { summary: '0px' },
+    },
+
+    draggableStickyTransition: {
+      description: 'Can be used to change the sticky transition',
+      defaultValue: { summary: 'left 0.3s ease' },
     },
   },
 } as Meta;
@@ -23,7 +33,9 @@ export const Basic: Story = (args: any) => ({
   template: `
   <div
     draggable
-    [draggableSticky]="true"
+    [draggableSticky]="draggableSticky"
+    [draggableStickyMargins]="draggableStickyMargins"
+    [draggableStickyTransition]="draggableStickyTransition"
     class="floating-button"
   >+</div>
   `,
@@ -46,4 +58,8 @@ export const Basic: Story = (args: any) => ({
   ],
 });
 
-Basic.args = {};
+Basic.args = {
+  draggableSticky: true,
+  draggableStickyMargins: '0px',
+  draggableStickyTransition: 'left 0.3s ease',
+};

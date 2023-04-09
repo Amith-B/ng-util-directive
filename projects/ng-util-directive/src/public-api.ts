@@ -16,3 +16,7 @@ export * from './lib/resize/ng-container-resize.directive';
 // IntersectionObserver directive
 export * from './lib/intersection/ng-container-intersection.module';
 export * from './lib/intersection/ng-container-intersection.directive';
+
+// Draggable directive
+export * from './lib/intersection/ng-container-intersection.module';
+export * from './lib/intersection/ng-container-intersection.directive';
