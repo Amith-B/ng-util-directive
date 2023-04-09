@@ -18,5 +18,5 @@ export * from './lib/intersection/ng-container-intersection.module';
 export * from './lib/intersection/ng-container-intersection.directive';
 
 // Draggable directive
-export * from './lib/intersection/ng-container-intersection.module';
-export * from './lib/intersection/ng-container-intersection.directive';
+export * from './lib/draggable/ng-draggable.module';
+export * from './lib/draggable/ng-draggable.directive';
