@@ -19,5 +19,12 @@ import { Meta, Story } from "@storybook/addon-docs/blocks";
 ## Handle resize event
 
 ```html
-<div draggable [draggableSticky]="true">Some Content</div>
+<div
+  draggable
+  [draggableSticky]="true"
+  [draggableStickyMargins]="1rem"
+  [draggableStickyTransition]="left 0.3s ease"
+>
+  Any content
+</div>
 ```

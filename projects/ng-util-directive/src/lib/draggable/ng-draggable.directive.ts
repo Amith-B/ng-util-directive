@@ -47,6 +47,7 @@ export class NgDraggableDirective {
     if (this.dragging) {
       this.touchAction = 'none';
       this.userSelect = 'none';
+      this.position = 'fixed';
 
       const left = event.clientX - this.initialOffsetX;
       const top = event.clientY - this.initialOffsetY;

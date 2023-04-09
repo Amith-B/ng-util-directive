@@ -45,9 +45,6 @@ export const Basic: Story = (args: any) => ({
         width: 48px;
         height: 48px;
         background-color: orange;
-        position: fixed;
-        bottom: 1rem;
-        right: 1rem;
         font-size: 2rem;
         border-radius: 50%;
         display: flex;
