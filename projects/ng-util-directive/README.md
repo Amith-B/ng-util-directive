@@ -4,7 +4,9 @@
 
 `npm i ng-util-directive`
 
-This assumes that you are using angular project to consume this library.
+### Requirements
+
+Minimum angular version: `14.0.0`
 
 ### Available Directives
 
