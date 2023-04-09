@@ -26,30 +26,30 @@ export const GLOBAL_SKELETON_LOADER_COMPONENT = new InjectionToken<
 >('SKELETON_LOADER_COMPONENT');
 
 @Directive({
-  selector: '[ngSkeleton]',
+  selector: '[skeletonLoader]',
 })
 export class NgSkeletonDirective implements AfterViewInit, OnChanges, DoCheck {
   /**
    * If `true` this shows skeleton loader in place of dom element.
    * It will take the height and width of the dom element
    */
-  @Input() ngSkeleton = false;
+  @Input() skeletonLoader = false;
 
   /**
    * This can be used to show a custom component as a loader, by default the inbuilt `NgSkeletonDefaultLoaderComponent` component is rendered
    */
-  @Input() ngSkeletonComponent: Type<unknown> = NgSkeletonShinyLoaderComponent;
+  @Input() skeletonLoaderComponent: Type<unknown> = NgSkeletonShinyLoaderComponent;
 
   /**
    * This can be used to pass any object data to the skeleton component
    * `ShinyLoaderData` - default type
    */
-  @Input() ngSkeletonData: ShinyLoaderData | unknown;
+  @Input() skeletonLoaderData: ShinyLoaderData | unknown;
 
   /**
    * If `true` the dom element will be hidden with visibility: hidden
    */
-  @Input() ngSkeletonHideOnLoading = true;
+  @Input() skeletonLoaderHideOnLoading = true;
 
   constructor(
     private tpl: TemplateRef<unknown>,
@@ -59,7 +59,7 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges, DoCheck {
     globalLoaderComponent: Type<unknown>
   ) {
     if (globalLoaderComponent) {
-      this.ngSkeletonComponent = globalLoaderComponent;
+      this.skeletonLoaderComponent = globalLoaderComponent;
     }
   }
 
@@ -79,7 +79,7 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges, DoCheck {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.updateInputs();
-    if (changes['ngSkeleton']) {
+    if (changes['skeletonLoader']) {
       this.handleNodeVisibility();
     }
   }
@@ -89,18 +89,18 @@ export class NgSkeletonDirective implements AfterViewInit, OnChanges, DoCheck {
   }
 
   handleNodeVisibility(): void {
-    if (this.ngSkeletonHideOnLoading && this.ngContentNodes) {
+    if (this.skeletonLoaderHideOnLoading && this.ngContentNodes) {
       this.ngContentNodes.forEach((node: HTMLElement) => {
-        node.style.visibility = this.ngSkeleton ? 'hidden' : 'visible';
+        node.style.visibility = this.skeletonLoader ? 'hidden' : 'visible';
       });
     }
   }
 
   updateInputs(): void {
     if (this.componentRef) {
-      this.componentRef.setInput('loading', this.ngSkeleton);
-      this.componentRef.setInput('loaderComponent', this.ngSkeletonComponent);
-      this.componentRef.setInput('data', this.ngSkeletonData);
+      this.componentRef.setInput('loading', this.skeletonLoader);
+      this.componentRef.setInput('loaderComponent', this.skeletonLoaderComponent);
+      this.componentRef.setInput('data', this.skeletonLoaderData);
     }
   }
 }

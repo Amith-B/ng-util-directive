@@ -11,10 +11,10 @@ export default {
     }),
   ],
   argTypes: {
-    ngContainerResize: {
+    containerResize: {
       description:
         'An output event which emits `ResizeObserverEntry` for the the dom element on which this directive is used.<br/>This directive uses `ResizeObserver` internally and disconnects the observer when view is destroyed',
-      action: 'ngContainerResize',
+      action: 'containerResize',
     },
     JSON: {
       table: { disable: true },
@@ -47,7 +47,7 @@ export const Basic: Story = (args: any) => ({
     "
   >
     <div
-      (ngContainerResize)="handleContainerResize($event)"
+      (containerResize)="handleContainerResize($event)"
       style="width: 100%; height: 100%; background-color: #ffaaaa82;
       "
     ></div>

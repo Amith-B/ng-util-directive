@@ -1,12 +1,15 @@
-import { NgStyle } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { NgSkeletonLoader } from '../ng-skeleton.interface';
 import { SkeletonService } from '../ng-skeleton.service';
+import { ShinyLoaderData } from './shiny-loader.model';
 
 @Component({
   selector: 'shiny-loader',
-  standalone: true,
-  imports: [NgStyle],
   template: `
     <div
       class="shiny-skeleton"
@@ -51,7 +54,7 @@ import { SkeletonService } from '../ng-skeleton.service';
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgSkeletonShinyLoaderComponent
   extends NgSkeletonLoader
@@ -109,7 +112,7 @@ export class NgSkeletonShinyLoaderComponent
       }
     }
 
-    if (data.loaderColor1 && data.loaderColor2) {
+    if (data && data.loaderColor1 && data.loaderColor2) {
       this.color1 = data.loaderColor1;
       this.color2 = data.loaderColor2;
     }
@@ -117,31 +120,4 @@ export class NgSkeletonShinyLoaderComponent
     this.cdr.detectChanges();
   }
 }
-
-export type ShinyLoaderData = (FullSize | Circle | Square | Rectangle) & {
-  loaderColor1?: string;
-  loaderColor2?: string;
-};
-
-export type FullSize = {
-  shape: 'fullSize';
-  borderRadius?: string;
-};
-
-export type Circle = {
-  shape: 'circle';
-  size: string;
-};
-
-export type Square = {
-  shape: 'square';
-  size: string;
-  borderRadius?: string;
-};
-
-export type Rectangle = {
-  shape: 'rectangle';
-  borderRadius?: string;
-  width: string;
-  height: string;
-};
+export * from './shiny-loader.model';

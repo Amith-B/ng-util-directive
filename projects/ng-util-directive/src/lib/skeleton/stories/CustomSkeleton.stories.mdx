@@ -67,12 +67,12 @@ export class NgSkeletonPercentLoaderComponent extends NgSkeletonLoader {
   selector: "image-upload",
   template: `
     <img
-      *ngSkeleton="
-          true;
-          data: { percent };
-          hideOnLoading: false;
-          component: component
-        "
+      *skeletonLoader="
+        true;
+        data: { percent };
+        hideOnLoading: false;
+        component: component
+      "
       style="width: 400px; height: 200px; border-radius: 20px;"
       src="art.jpg"
     />
@@ -92,13 +92,13 @@ class ImageUploadComponent implements OnInit {
 
 The custom skeleton component can be used in two ways:
 
-1. Pass custom component as `component` prop for each `ngSkeleton` directive
+1. Pass custom component as `component` prop for each `skeletonLoader` directive
 
 ```typescript ts
 @Component({
   template: `
     <img
-      *ngSkeleton="
+      *skeletonLoader="
         loading;
         data: { shape: 'fullSize' };
         component: YourOwnSkeletonComponent;
@@ -134,7 +134,7 @@ export class AppModule { }
 ## How to create a custom skeleton component
 
 1. Create a class component and extend `NgSkeletonLoader` class from `ng-util-directive`
-1. Declare the abstract method `handleDataChange` which accepts the `data` as parameter, this method will be called with the new data whenever it is updated with `data` prop of `ngSkeleton`
+1. Declare the abstract method `handleDataChange` which accepts the `data` as parameter, this method will be called with the new data whenever it is updated with `data` prop of `skeletonLoader`
 
 ```typescript ts
 import { NgSkeletonLoader } from "ng-util-directive";

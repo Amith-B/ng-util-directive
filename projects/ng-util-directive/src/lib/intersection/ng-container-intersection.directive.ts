@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[ngContainerIntersection]',
+  selector: '[containerIntersection]',
 })
 export class NgContainerIntersectionDirective
   implements AfterViewInit, OnDestroy, OnChanges
@@ -19,12 +19,12 @@ export class NgContainerIntersectionDirective
    * Options for IntersectionObserver
    * `{ root?: Element | Document | null; rootMargin?: string; threshold?: number | number[]; }`
    */
-  @Input() ngContainerIntersectionOptions?: IntersectionObserverInit;
+  @Input() containerIntersectionOptions?: IntersectionObserverInit;
   /**
    * An output event which emits `IntersectionObserverEntry` for the the dom element on which this directive is used.
    * This directive uses `IntersectionObserver` internally and disconnects the observer when view is destroyed
    */
-  @Output() ngContainerIntersection =
+  @Output() containerIntersection =
     new EventEmitter<IntersectionObserverEntry>();
 
   constructor(private el: ElementRef) {}
@@ -43,8 +43,8 @@ export class NgContainerIntersectionDirective
 
     if ('IntersectionObserver' in window) {
       this.intersecObsRef = new IntersectionObserver(([entry]) => {
-        this.ngContainerIntersection.emit(entry);
-      }, this.ngContainerIntersectionOptions);
+        this.containerIntersection.emit(entry);
+      }, this.containerIntersectionOptions);
       this.intersecObsRef.observe(this.el.nativeElement);
     }
   }

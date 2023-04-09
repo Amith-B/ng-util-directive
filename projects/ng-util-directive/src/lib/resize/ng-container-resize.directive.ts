@@ -8,14 +8,14 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[ngContainerResize]',
+  selector: '[containerResize]',
 })
 export class NgContainerResizeDirective implements AfterViewInit, OnDestroy {
   /**
    * An output event which emits `ResizeObserverEntry` for the the dom element on which this directive is used.
    * This directive uses `ResizeObserver` internally and disconnects the observer when view is destroyed
    */
-  @Output() ngContainerResize = new EventEmitter<ResizeObserverEntry>();
+  @Output() containerResize = new EventEmitter<ResizeObserverEntry>();
 
   constructor(private el: ElementRef) {}
 
@@ -23,7 +23,7 @@ export class NgContainerResizeDirective implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if ('ResizeObserver' in window) {
       this.resObsRef = new ResizeObserver(([entry]) => {
-        this.ngContainerResize.emit(entry);
+        this.containerResize.emit(entry);
       });
       this.resObsRef.observe(this.el.nativeElement);
     }

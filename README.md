@@ -4,15 +4,18 @@
 
 `npm i ng-util-directive`
 
-This assumes that you are using angular project to consume this library.
+### Requirements
+
+Minimum angular version: `14.0.0`
 
 ### Available Directives
 
-| Import                                                              | Description                                                                                                  | Usage                                                                                                                                                                                           |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `import { NgSkeletonModule } from 'ng-util-directive'`              | `A skeleton directive which shows as an overlay on top of the dom element`                                   | `<img (load)="loading = false" *ngSkeleton="loading; data: {shape: 'circle', size: '100px' }; hideOnLoading: true" style="width: 100px; height: 100px; border-radius: 50%;" src="avatar.svg"/>` |
-| `import { NgContainerResizeModule } from 'ng-util-directive'`       | `A directive which emits the resize event for a container. Which internally uses ResizeObserver`             | `<div (ngContainerResize)="handleContainerResize($event)">Some Content </div>`                                                                                                                  |
-| `import { NgContainerIntersectionModule } from 'ng-util-directive'` | `A directive which emits the intersection event for a container. Which internally uses IntersectionObserver` | `<div (ngContainerIntersection)="handleContainerIntersection($event)" [ngContainerIntersectionOptions]="{rootMargin: '-200px', threshold: 1, root: rootElement}">Some Content </div>`           |
+| Import                                                              | Description                                                                                                | Usage                                                                                                                                                                                               |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `import { NgSkeletonModule } from 'ng-util-directive'`              | A skeleton directive which shows as an overlay on top of the dom element                                   | `<img (load)="loading = false" *skeletonLoader="loading; data: {shape: 'circle', size: '100px' }; hideOnLoading: true" style="width: 100px; height: 100px; border-radius: 50%;" src="avatar.svg"/>` |
+| `import { NgContainerResizeModule } from 'ng-util-directive'`       | A directive which emits the resize event for a container. Which internally uses ResizeObserver             | `<div (containerResize)="handleContainerResize($event)">Some Content </div>`                                                                                                                        |
+| `import { NgContainerIntersectionModule } from 'ng-util-directive'` | A directive which emits the intersection event for a container. Which internally uses IntersectionObserver | `<div (containerIntersection)="handleContainerIntersection($event)" [containerIntersectionOptions]="{rootMargin: '-200px', threshold: 1, root: rootElement}">Some Content </div>`                   |
+| `import { NgDraggableModule } from 'ng-util-directive'`             | A directive makes the host element draggable and makes it sticky to edges of screen                        | `<div draggable [draggableSticky]="true" [draggableStickyMargins]="1rem" [draggableStickyTransition]="left 0.3s ease">Any content</div>`                                               |
 
 # Storybook Demo
 
