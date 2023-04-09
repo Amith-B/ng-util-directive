@@ -1,13 +1,10 @@
 import { Component, Input, SimpleChanges, Type } from '@angular/core';
 
-import { CommonModule } from '@angular/common';
 import { NgSkeletonShinyLoaderComponent } from './loaders/shiny-loader.component';
 import { SkeletonService } from './ng-skeleton.service';
 
 @Component({
   selector: 'ng-skeleton',
-  standalone: true,
-  imports: [CommonModule],
   providers: [SkeletonService],
   template: `
     <ng-content></ng-content>
