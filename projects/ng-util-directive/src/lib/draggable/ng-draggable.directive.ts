@@ -41,6 +41,8 @@ export class NgDraggableDirective {
     this.initialOffsetX = event.offsetX;
     this.initialOffsetY = event.offsetY;
     this.transition = undefined;
+    event.stopPropagation();
+    event.preventDefault();
   }
   @HostListener('window:pointermove', ['$event'])
   handlePointMove(event: PointerEvent): void {
@@ -54,6 +56,8 @@ export class NgDraggableDirective {
 
       this.top = `${top}px`;
       this.left = `${left}px`;
+      event.stopPropagation();
+      event.preventDefault();
     }
   }
   @HostListener('pointerup', ['$event']) handlePointUp(
@@ -85,6 +89,8 @@ export class NgDraggableDirective {
       } else {
         this.left = this.draggableStickyMargins || '0px';
       }
+      event.stopPropagation();
+      event.preventDefault();
     }
   }
 }
