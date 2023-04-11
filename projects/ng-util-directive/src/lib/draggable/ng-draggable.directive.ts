@@ -138,8 +138,8 @@ export class NgDraggableDirective implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.teleportElement) {
-      this.teleportElement.remove();
+    if (this.teleportElement && this.el.nativeElement) {
+      this.el.nativeElement.remove();
     }
   }
 }
