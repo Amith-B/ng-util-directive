@@ -1,13 +1,25 @@
-import { Directive, HostBinding, HostListener, Input } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 
 @Directive({
   selector: '[draggable]',
 })
-export class NgDraggableDirective {
+export class NgDraggableDirective implements OnDestroy {
   /**
    * When `true` the draggable element will move to either right or left of the screen after mouseleave event
    */
   @Input() draggableSticky = true;
+
+  /**
+   * A css id selector to which the host element will be appended when dragging starts
+   */
+  @Input() draggableTeleportTo?: string;
 
   /**
    * Can be used to change the sticky transition, default `left 0.3s ease`
@@ -44,9 +56,12 @@ export class NgDraggableDirective {
     event.stopPropagation();
     event.preventDefault();
   }
+
   @HostListener('window:pointermove', ['$event'])
   handlePointMove(event: PointerEvent): void {
     if (this.dragging) {
+      this.handleTeleport();
+
       this.touchAction = 'none';
       this.userSelect = 'none';
       this.position = 'fixed';
@@ -91,6 +106,40 @@ export class NgDraggableDirective {
       }
       event.stopPropagation();
       event.preventDefault();
+    }
+  }
+
+  constructor(private el: ElementRef) {}
+
+  private draggingStarted = false;
+  private teleportElement?: HTMLElement | null;
+  handleTeleport(): void {
+    if (
+      !this.draggingStarted &&
+      this.draggableTeleportTo &&
+      this.el.nativeElement
+    ) {
+      this.teleportElement = document.querySelector(
+        `#${this.draggableTeleportTo}`
+      );
+
+      if (!this.teleportElement) {
+        this.teleportElement = document.createElement('div');
+
+        this.teleportElement.setAttribute('id', this.draggableTeleportTo);
+
+        document.body.appendChild(this.teleportElement);
+      }
+
+      this.teleportElement.appendChild(this.el.nativeElement);
+
+      this.draggingStarted = true;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.teleportElement && this.el.nativeElement) {
+      this.el.nativeElement.remove();
     }
   }
 }
