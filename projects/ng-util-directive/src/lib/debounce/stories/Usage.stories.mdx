@@ -19,5 +19,18 @@ import { Meta, Story } from "@storybook/addon-docs/blocks";
 ## Handle debounce event
 
 ```html
-<div>Some Content</div>
+<button
+  (debounceEvent)="handleEvent($event)"
+  debounceEventName="click"
+  [debounceEventTimer]="500"
+>
+  Debounce Event
+</button>
+
+<input
+  (debounceEvent)="handleEvent($event)"
+  debounceEventName="input"
+  [debounceEventTimer]="500"
+  placeholder="Type something"
+/>
 ```
