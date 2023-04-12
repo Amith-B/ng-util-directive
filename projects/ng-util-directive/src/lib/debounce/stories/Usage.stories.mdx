@@ -1,0 +1,36 @@
+import { Meta, Story } from "@storybook/addon-docs/blocks";
+
+<Meta
+  title="Directives/NgDebounceEvent/Guide: Usage guide"
+  parameters={{
+    viewMode: "docs",
+    previewTabs: {
+      canvas: { hidden: true },
+    },
+  }}
+/>
+
+# NgContainerResize Usage
+
+`import { NgDebounceEventModule } from 'ng-util-directive';`
+
+<br />
+
+## Handle debounce event
+
+```html
+<button
+  (debounceEvent)="handleEvent($event)"
+  debounceEventName="click"
+  [debounceEventTimer]="500"
+>
+  Debounce Event
+</button>
+
+<input
+  (debounceEvent)="handleEvent($event)"
+  debounceEventName="input"
+  [debounceEventTimer]="500"
+  placeholder="Type something"
+/>
+```
