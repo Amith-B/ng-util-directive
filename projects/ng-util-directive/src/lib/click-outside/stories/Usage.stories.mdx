@@ -1,0 +1,23 @@
+import { Meta, Story } from "@storybook/addon-docs/blocks";
+
+<Meta
+  title="Directives/NgClickOutside/Guide: Usage guide"
+  parameters={{
+    viewMode: "docs",
+    previewTabs: {
+      canvas: { hidden: true },
+    },
+  }}
+/>
+
+# Module import
+
+`import { NgClickOutsideModule } from 'ng-util-directive';`
+
+<br />
+
+## Handle resize event
+
+```html
+<div (clickOutside)="handleClickOutside($event)">Some Content</div>
+```
