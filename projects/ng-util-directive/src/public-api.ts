@@ -20,3 +20,7 @@ export * from './lib/intersection/ng-container-intersection.directive';
 // Draggable directive
 export * from './lib/draggable/ng-draggable.module';
 export * from './lib/draggable/ng-draggable.directive';
+
+// ClickOutside directive
+export * from './lib/click-outside/ng-click-outside.module';
+export * from './lib/click-outside/ng-click-outside.directive';

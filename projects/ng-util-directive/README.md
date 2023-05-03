@@ -17,6 +17,7 @@ Minimum angular version: `14.0.0`
 | `import { NgContainerIntersectionModule } from 'ng-util-directive'` | A directive which emits the intersection event for a container. Which internally uses IntersectionObserver | `<div (containerIntersection)="handleContainerIntersection($event)" [containerIntersectionOptions]="{rootMargin: '-200px', threshold: 1, root: rootElement}">Some Content </div>`                   |
 | `import { NgDraggableModule } from 'ng-util-directive'`             | A directive makes the host element draggable and makes it sticky to edges of screen                        | `<div draggable [draggableSticky]="true" draggableStickyMargins="1rem" draggableStickyTransition="left 0.3s ease" draggableTeleportTo="modal-container">Any content</div>`                          |
 | `import { NgDebounceEventModule } from 'ng-util-directive'`         | A directive which emits the given event with a provided debounce                                           | `<input (debounceEvent)="handleEvent($event)" debounceEventName="input" [debounceEventTimer]="500" placeholder="Type something"/>`                                                                  |
+| `import { NgClickOutsideModule } from 'ng-util-directive'`          | A directive which emits click event when clicked outside of the host element                               | `<div (clickOutside)="handleClickOutside($event)">Some Content</div>`                                                                                                                               |
 
 # Storybook Demo
 
