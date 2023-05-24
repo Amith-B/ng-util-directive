@@ -5,6 +5,7 @@ import {
   HostListener,
   Input,
   OnDestroy,
+  Renderer2,
 } from '@angular/core';
 
 @Directive({
@@ -55,26 +56,9 @@ export class NgDraggableDirective implements OnDestroy {
     this.transition = undefined;
     event.stopPropagation();
     event.preventDefault();
+    this.registerMouseMove();
   }
 
-  @HostListener('window:pointermove', ['$event'])
-  handlePointMove(event: PointerEvent): void {
-    if (this.dragging) {
-      this.handleTeleport();
-
-      this.touchAction = 'none';
-      this.userSelect = 'none';
-      this.position = 'fixed';
-
-      const left = event.clientX - this.initialOffsetX;
-      const top = event.clientY - this.initialOffsetY;
-
-      this.top = `${top}px`;
-      this.left = `${left}px`;
-      event.stopPropagation();
-      event.preventDefault();
-    }
-  }
   @HostListener('pointerup', ['$event']) handlePointUp(
     event: PointerEvent
   ): void {
@@ -82,6 +66,7 @@ export class NgDraggableDirective implements OnDestroy {
     this.touchAction = undefined;
     this.userSelect = undefined;
     this.transition = this.draggableStickyTransition || 'left 0.3s ease';
+    this.unregisterMouseMove();
 
     if (!this.draggableSticky) {
       return;
@@ -109,10 +94,11 @@ export class NgDraggableDirective implements OnDestroy {
     }
   }
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   private draggingStarted = false;
   private teleportElement?: HTMLElement | null;
+  private dispose?: () => void;
   handleTeleport(): void {
     if (
       !this.draggingStarted &&
@@ -137,9 +123,42 @@ export class NgDraggableDirective implements OnDestroy {
     }
   }
 
+  registerMouseMove(): void {
+    this.unregisterMouseMove();
+    this.dispose = this.renderer.listen(
+      document,
+      'pointermove',
+      (event: PointerEvent) => {
+        if (this.dragging) {
+          this.handleTeleport();
+
+          this.touchAction = 'none';
+          this.userSelect = 'none';
+          this.position = 'fixed';
+
+          const left = event.clientX - this.initialOffsetX;
+          const top = event.clientY - this.initialOffsetY;
+
+          this.top = `${top}px`;
+          this.left = `${left}px`;
+          event.stopPropagation();
+          event.preventDefault();
+        }
+      }
+    );
+  }
+
+  unregisterMouseMove(): void {
+    if (this.dispose) {
+      this.dispose();
+      this.dispose = undefined;
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.teleportElement && this.el.nativeElement) {
       this.el.nativeElement.remove();
     }
+    this.unregisterMouseMove();
   }
 }
