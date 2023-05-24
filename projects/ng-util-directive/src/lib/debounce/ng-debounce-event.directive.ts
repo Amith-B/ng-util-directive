@@ -4,20 +4,19 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
-  OnInit,
   Output,
-  Renderer2,
   SimpleChanges,
 } from '@angular/core';
-import { Subject, Subscription, debounce, timer } from 'rxjs';
+import { Subscription, debounce, fromEvent, timer } from 'rxjs';
 
 @Directive({
   selector: '[debounceEvent]',
 })
 export class NgDebounceEventDirective
-  implements OnInit, AfterViewInit, OnChanges, OnDestroy
+  implements AfterViewInit, OnChanges, OnDestroy
 {
   /**
    * The name of the event that needs to be listened on host element
@@ -34,37 +33,30 @@ export class NgDebounceEventDirective
    */
   @Output() debounceEvent = new EventEmitter<unknown>();
 
-  constructor(private renderer: Renderer2, private el: ElementRef) {}
+  constructor(private el: ElementRef, private ngZone: NgZone) {}
 
-  private eventEmitterSubject = new Subject<unknown>();
-  private $eventEmitterObs = this.eventEmitterSubject.asObservable();
-
-  private emitterSubscription?: Subscription;
-  ngOnInit() {
-    this.emitterSubscription = this.$eventEmitterObs
-      .pipe(debounce(() => timer(this.debounceEventTimer)))
-      .subscribe((event) => {
-        this.debounceEvent.emit(event);
-      });
-  }
-
-  private dispose?: () => void;
+  private eventSubscription?: Subscription;
   registerEvent(): void {
-    this.disposeEvent();
+    this.unregisterEvent();
 
-    this.dispose = this.renderer.listen(
-      this.el.nativeElement,
-      this.debounceEventName,
-      (event: unknown) => {
-        this.eventEmitterSubject.next(event);
-      }
-    );
+    this.ngZone.runOutsideAngular(() => {
+      this.eventSubscription = fromEvent(
+        this.el.nativeElement,
+        this.debounceEventName
+      )
+        .pipe(debounce(() => timer(this.debounceEventTimer)))
+        .subscribe((event: unknown) => {
+          this.ngZone.run(() => {
+            this.debounceEvent.emit(event);
+          });
+        });
+    });
   }
 
-  disposeEvent(): void {
-    if (this.dispose) {
-      this.dispose();
-      this.dispose = undefined;
+  unregisterEvent(): void {
+    if (this.eventSubscription) {
+      this.eventSubscription.unsubscribe();
+      this.eventSubscription = undefined;
     }
   }
 
@@ -82,8 +74,6 @@ export class NgDebounceEventDirective
   }
 
   ngOnDestroy(): void {
-    this.eventEmitterSubject.complete();
-    this.emitterSubscription?.unsubscribe?.();
-    this.disposeEvent();
+    this.unregisterEvent();
   }
 }
