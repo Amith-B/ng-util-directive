@@ -49,7 +49,9 @@ export class NgDebounceEventDirective
   }
 
   private dispose?: () => void;
-  handleEvent(): void {
+  registerEvent(): void {
+    this.disposeEvent();
+
     this.dispose = this.renderer.listen(
       this.el.nativeElement,
       this.debounceEventName,
@@ -59,8 +61,15 @@ export class NgDebounceEventDirective
     );
   }
 
+  disposeEvent(): void {
+    if (this.dispose) {
+      this.dispose();
+      this.dispose = undefined;
+    }
+  }
+
   ngAfterViewInit(): void {
-    this.handleEvent();
+    this.registerEvent();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -68,18 +77,13 @@ export class NgDebounceEventDirective
       changes['debounceEventName'] &&
       !changes['debounceEventName'].firstChange
     ) {
-      if (this.dispose) {
-        this.dispose();
-        this.dispose = undefined;
-      }
-
-      this.handleEvent();
+      this.registerEvent();
     }
   }
 
   ngOnDestroy(): void {
     this.eventEmitterSubject.complete();
     this.emitterSubscription?.unsubscribe?.();
-    this.dispose?.();
+    this.disposeEvent();
   }
 }
